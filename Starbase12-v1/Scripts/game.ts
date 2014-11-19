@@ -126,17 +126,17 @@ function gameStart(): void {
     player.cache(0, 0, player.width, player.height);
    
 
-    /* game.addEventListener("click", function () {
+    game.addEventListener("click", function () {
         started = true;
         createjs.Sound.play("explosion");
         myBoom[count] = new createjs.Container();
         game.addChild(myBoom[count]);
-        emitter[count] = new objects.Explosion(Math.random() * stage.canvas.width, Math.random() * stage.canvas.height);
+        emitter[count] = new objects.Explosion(stage.mouseX, stage.mouseY);
         
         myBoom[count].addChild(emitter[count]);
         count++;
     });
-*/
+
 
     game.addEventListener("mousedown", setPhaserAim);
     game.addEventListener("pressup", getPhaserResult);

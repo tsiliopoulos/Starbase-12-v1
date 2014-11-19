@@ -18,8 +18,6 @@ var objects;
             this.emissionRate = 100;
             this.maxParticles = 500;
 
-            //this.life = 590;
-            //this.lifeVar = 380;
             this.life = 590;
             this.lifeVar = 380;
             this.speed = 100;
