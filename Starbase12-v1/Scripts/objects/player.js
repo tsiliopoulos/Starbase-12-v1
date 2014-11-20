@@ -113,13 +113,13 @@ var objects;
             }
 
             // Check Lower Bounds
-            if (this.y >= config.HEIGHT - (this.height * 0.5)) {
-                this.y = config.HEIGHT - (this.height * 0.5);
+            if (this.y >= config.HEIGHT - (this.height * 0.5) - 31) {
+                this.y = config.HEIGHT - (this.height * 0.5) - 31;
             }
 
             // Check Upper Bounds
-            if (this.y <= (this.height * 0.5)) {
-                this.y = (this.height * 0.5);
+            if (this.y <= (this.height * 0.5) + 31) {
+                this.y = (this.height * 0.5) + 31;
             }
         };
 
@@ -185,6 +185,11 @@ var objects;
             this.calcPosition();
             this.checkBounds();
             this.shield.update();
+        };
+
+        Player.prototype.destroy = function () {
+            this.shield.destroy();
+            game.removeChild(this);
         };
         return Player;
     })(objects.GameObject);

@@ -2,7 +2,6 @@
     font-family: 'startrek';
     src: url('../assets/fonts/startrek.eot');
     src: url('../assets/fonts/startrek.eot?#iefix') format('embedded-opentype'), 
-        url('../assets/fonts/startrek.woff2') format('woff2'), 
         url('../assets/fonts/startrek.woff') format('woff'), 
         url('../assets/fonts/startrek.ttf') format('truetype'), 
         url('../assets/fonts/startrek.svg#Dock51') format('svg');

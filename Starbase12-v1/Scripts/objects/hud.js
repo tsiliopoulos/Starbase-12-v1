@@ -12,7 +12,14 @@ var objects;
             _super.call(this);
 
             this.drawBorders();
+            this.drawStatLabels();
         }
+        Hud.prototype.drawStatLabels = function () {
+            this.phaserEnergy = new createjs.Text("PHASER ENERGY", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
+            this.phaserEnergy.x = 40;
+            this.addChild(this.phaserEnergy);
+        };
+
         Hud.prototype.drawBorders = function () {
             this.leftBorder = new createjs.Bitmap(managers.Assets.loader.getResult("hudLS"));
             this.rightBorder = new createjs.Bitmap(managers.Assets.loader.getResult("hudRS"));

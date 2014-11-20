@@ -4,6 +4,7 @@
 /// <reference path="config/controls.ts" />
 /// <reference path="managers/asset.ts" />
 /// <reference path="utility/distance.ts" />
+/// <reference path="interfaces/iobject.ts" />
 /// <reference path="objects/gameobject.ts" />
 /// <reference path="objects/hud.ts" />
 /// <reference path="objects/crosshair.ts" />
@@ -11,14 +12,17 @@
 /// <reference path="objects/label.ts" />
 /// <reference path="objects/shield.ts" />
 /// <reference path="objects/player.ts" />
+/// <reference path="objects/phaser.ts" />
+
 
 var stage: createjs.Stage;
 var canvas;
-var context;
 var emitter = [];
 var myBoom = [];
+var phasers = [];
 var stats: Stats;
 var started: boolean = false;
+var phaserStrafe: boolean = false;
 var count: number = 0;
 
 // Game Objects
@@ -41,13 +45,13 @@ function init(): void {
     //stage.enableMouseOver(20);
     
 
-    createjs.Ticker.setFPS(60);
+    createjs.Ticker.setFPS(config.FPS);
     createjs.Ticker.addEventListener("tick", gameLoop);
 
     gameStart();
 }
 
-function gameLoop(event): void {
+function gameLoop(event) {
     // Start counting for FPS stats
     this.stats.begin();
 
@@ -59,6 +63,12 @@ function gameLoop(event): void {
                 game.removeChild(myBoom[i]);
             }
         }
+    }
+
+    if (phaserStrafe) {
+        game.removeChild(phasers[phasers.length - 1]);
+        phasers.pop();
+        phasers.push(new objects.Phaser());
     }
 
     player.update();
@@ -83,27 +93,18 @@ function setupStats() {
 }
 
 function setPhaserAim(event: MouseEvent): void {
-    var shipOrigin: createjs.Point = new createjs.Point();
-    shipOrigin.x = player.x;
-    shipOrigin.y = player.y;
-    var phaserTarget: createjs.Point = new createjs.Point();
-    phaserTarget.x = stage.mouseX;
-    phaserTarget.y = stage.mouseY;
-
-    var range = Math.floor(utility.Distance.calculate(shipOrigin, phaserTarget));
-    var phaserLine = new createjs.Graphics();
-    phaserLine.beginStroke("#FFF4CC").setStrokeStyle(2);
-    phaserLine.moveTo(player.x, player.y).lineTo(stage.mouseX, stage.mouseY);
-    phaserLine.beginStroke("#AA4312").setStrokeStyle(5);
-    phaserLine.moveTo(player.x, player.y).lineTo(stage.mouseX, stage.mouseY);
-    phaserLine.beginStroke("#FFF4CC").setStrokeStyle(2);
-    phaserLine.moveTo(player.x, player.y).lineTo(stage.mouseX, stage.mouseY);
-    var phaserBeam = new createjs.Shape(phaserLine);
-    game.addChildAt(phaserBeam, layer.PHASER);
+    phasers.push(new objects.Phaser());
+    var phaserSound = createjs.Sound.play("phaser");
+    phaserSound.addEventListener("complete", function (evt) {
+        game.removeChild(phasers[phasers.length - 1]);
+        phasers.pop();
+    });
 }
 
 function getPhaserResult(event: MouseEvent): void {
-    game.removeChildAt(layer.PHASER);
+    phaserStrafe = false;
+    game.removeChild(phasers[phasers.length - 1]);
+    phasers.pop();
 }
 
 function gameStart(): void {
@@ -116,7 +117,7 @@ function gameStart(): void {
 
     background = new createjs.Bitmap(managers.Assets.loader.getResult("background"));
     game.addChildAt(background, layer.BACKGROUND);
-    background.cache(0, 0, 800, 600);
+    background.cache(0, 0, config.WIDTH, config.HEIGHT);
 
     hud = new objects.Hud();
     game.addChildAt(hud, layer.HUD);
@@ -124,10 +125,12 @@ function gameStart(): void {
     player = new objects.Player();
     game.addChild(player);
     player.cache(0, 0, player.width, player.height);
-   
+
+ 
 
     game.addEventListener("click", function () {
         started = true;
+
         createjs.Sound.play("explosion");
         myBoom[count] = new createjs.Container();
         game.addChild(myBoom[count]);
@@ -140,6 +143,9 @@ function gameStart(): void {
 
     game.addEventListener("mousedown", setPhaserAim);
     game.addEventListener("pressup", getPhaserResult);
+    game.addEventListener("pressmove", function (evt) {
+        phaserStrafe = true;
+    });
 
 
     crosshair = new objects.Crosshair();
@@ -147,7 +153,6 @@ function gameStart(): void {
     crosshair.cache(stage.mouseX, stage.mouseY, crosshair.width, crosshair.height);
 
     stage.addChild(game);
-    game.cache(0, 0, 800, 600);
+    game.cache(0, 0, config.WIDTH, config.HEIGHT);
 
-    console.log(game.getNumChildren());
 }

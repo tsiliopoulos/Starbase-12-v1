@@ -15,7 +15,7 @@ var objects;
             _super.call(this, this.particle.image);
             this.position = new createjs.Point(x, y);
             this.emitterType = createjs.ParticleEmitterType.Emit;
-            this.emissionRate = 100;
+            this.emissionRate = 50;
             this.maxParticles = 500;
 
             this.life = 590;

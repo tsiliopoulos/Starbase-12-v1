@@ -111,12 +111,12 @@ module objects {
                 this.x = (this.width * 0.5) + 31;
             }
             // Check Lower Bounds
-            if (this.y >= config.HEIGHT - (this.height * 0.5)) {
-                this.y = config.HEIGHT - (this.height * 0.5);
+            if (this.y >= config.HEIGHT - (this.height * 0.5) -31) {
+                this.y = config.HEIGHT - (this.height * 0.5) -31;
             }
             // Check Upper Bounds
-            if (this.y <= (this.height * 0.5)) {
-                this.y = (this.height * 0.5);
+            if (this.y <= (this.height * 0.5) +31) {
+                this.y = (this.height * 0.5) +31 ;
             }
         }
 
@@ -183,6 +183,12 @@ module objects {
             this.calcPosition();
             this.checkBounds();
             this.shield.update();
+        }
+
+        destroy() {
+
+            this.shield.destroy();
+            game.removeChild(this);
         }
 
     }

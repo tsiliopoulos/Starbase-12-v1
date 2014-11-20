@@ -1,6 +1,6 @@
 ﻿/// <reference path="../managers/asset.ts" />
 module objects {
-    export class GameObject extends createjs.Sprite {
+    export class GameObject extends createjs.Sprite implements interfaces.IObject {
         width: number;
         height: number;
         constructor(SpriteName: string) {
@@ -9,6 +9,12 @@ module objects {
             this.height = this.getBounds().height;
             this.regX = this.width * 0.5;
             this.regY = this.height * 0.5;
+        }
+
+        update() {
+        }
+
+        destroy() {
         }
 
     }

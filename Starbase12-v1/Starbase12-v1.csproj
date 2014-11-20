@@ -127,6 +127,7 @@
     <Content Include="assets\images\startbaseTopRightRed.png" />
     <Content Include="assets\images\startbaseTopRightYellow.png" />
     <Content Include="assets\images\startbaseYellow.png" />
+    <Content Include="assets\sounds\phaser.mp3" />
     <Content Include="assets\sounds\smallexplosion.mp3" />
     <Content Include="css\app.css" />
     <Content Include="css\normalize.css" />
@@ -166,6 +167,7 @@
     <TypeScriptCompile Include="Scripts\config\controls.ts" />
     <TypeScriptCompile Include="Scripts\config\keys.ts" />
     <TypeScriptCompile Include="Scripts\config\layer.ts" />
+    <TypeScriptCompile Include="Scripts\interfaces\iobject.ts" />
     <TypeScriptCompile Include="Scripts\libs\createjs-lib.d.ts" />
     <TypeScriptCompile Include="Scripts\libs\easeljs.d.ts" />
     <TypeScriptCompile Include="Scripts\game.ts" />
@@ -176,6 +178,7 @@
     <TypeScriptCompile Include="Scripts\managers\asset.ts" />
     <TypeScriptCompile Include="Scripts\libs\stats.d.ts" />
     <TypeScriptCompile Include="Scripts\libs\require.d.ts" />
+    <TypeScriptCompile Include="Scripts\objects\phaser.ts" />
     <TypeScriptCompile Include="Scripts\objects\crosshair.ts" />
     <TypeScriptCompile Include="Scripts\objects\explosion.ts" />
     <TypeScriptCompile Include="Scripts\objects\gameobject.ts" />

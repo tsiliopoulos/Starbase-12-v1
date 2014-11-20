@@ -6,6 +6,7 @@
         { id: "background", src: "assets/images/hexagon.jpg" },
         { id: "hudLS", src: "assets/images/hudLS.png" },
         { id: "hudRS", src: "assets/images/hudRS.png" },
+        { id: "phaser", src: "assets/sounds/phaser.mp3" },
         { id: "explosion", src: "assets/sounds/smallexplosion.mp3" }
     ];
 

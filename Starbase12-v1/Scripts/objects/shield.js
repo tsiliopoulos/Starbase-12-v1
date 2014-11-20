@@ -33,6 +33,10 @@ var objects;
             this.x = this.entity.x;
             this.y = this.entity.y;
         };
+
+        Shield.prototype.destroy = function () {
+            game.removeChild(this);
+        };
         return Shield;
     })(createjs.Container);
     objects.Shield = Shield;

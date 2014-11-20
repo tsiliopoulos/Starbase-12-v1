@@ -1,5 +1,5 @@
 ﻿module objects {
-    export class Shield extends createjs.Container {
+    export class Shield extends createjs.Container implements interfaces.IObject {
         width: number;
         height: number;
         topLeft: createjs.Sprite;
@@ -33,6 +33,10 @@
         update() {
             this.x = this.entity.x;
             this.y = this.entity.y;
+        }
+
+        destroy() {
+            game.removeChild(this);
         }
     }
 } 

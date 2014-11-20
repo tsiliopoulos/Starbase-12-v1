@@ -16,6 +16,11 @@ var objects;
             this.regX = this.width * 0.5;
             this.regY = this.height * 0.5;
         }
+        GameObject.prototype.update = function () {
+        };
+
+        GameObject.prototype.destroy = function () {
+        };
         return GameObject;
     })(createjs.Sprite);
     objects.GameObject = GameObject;
