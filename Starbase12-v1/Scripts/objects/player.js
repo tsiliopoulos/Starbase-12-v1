@@ -7,23 +7,39 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+// Player Object Class
 var objects;
 (function (objects) {
     var Player = (function (_super) {
         __extends(Player, _super);
         function Player() {
-            this.x = config.WIDTH * 0.5;
-            this.y = config.HEIGHT * 0.5;
             _super.call(this, "ship");
 
             this.name = "ship";
-            this.init();
-            this.assignControls();
+            this._init();
+            this._assignControls();
             this.shieldsUp();
         }
+        // PUBLIC METHODS
+        // Update player position and condition on screen
+        Player.prototype.update = function () {
+            this._controlAction();
+            this.calcVector();
+            this.calcPosition();
+            this._checkBounds();
+            this.shield.update();
+        };
+
+        // Remove Player Object
+        Player.prototype.destroy = function () {
+            this.shield.destroy();
+            game.removeChild(this);
+        };
+
+        // PRIVATE METHODS
         // Initialize player properties
-        Player.prototype.init = function () {
-            this.turnRate = 3;
+        Player.prototype._init = function () {
+            this.turnRate = 1;
             this.speed = 0;
             this.direction = 90;
             this.dx = 0;
@@ -31,13 +47,13 @@ var objects;
         };
 
         // Bind key actions to player events
-        Player.prototype.assignControls = function () {
-            window.onkeydown = this.onControlDown;
-            window.onkeyup = this.onControlUp;
+        Player.prototype._assignControls = function () {
+            window.onkeydown = this._onControlDown;
+            window.onkeyup = this._onControlUp;
         };
 
         // Switch statement to activate movement and rotation
-        Player.prototype.onControlDown = function (event) {
+        Player.prototype._onControlDown = function (event) {
             switch (event.keyCode) {
                 case keys.A:
                 case keys.LEFT:
@@ -62,7 +78,7 @@ var objects;
         };
 
         // switch statement to reset controls
-        Player.prototype.onControlUp = function (event) {
+        Player.prototype._onControlUp = function (event) {
             switch (event.keyCode) {
                 case keys.A:
                 case keys.LEFT:
@@ -86,22 +102,8 @@ var objects;
             }
         };
 
-        // Calculate the new x and y coordinates
-        Player.prototype.calcVector = function () {
-            var radians = this.direction * (Math.PI / 180);
-            this.dx = this.speed * Math.cos(radians);
-            this.dy = this.speed * Math.sin(radians);
-            this.dy *= -1;
-        };
-
-        // Calculate player's new position
-        Player.prototype.calcPosition = function () {
-            this.x += this.dx;
-            this.y += this.dy;
-        };
-
         // Make Sure player stays on screen
-        Player.prototype.checkBounds = function () {
+        Player.prototype._checkBounds = function () {
             // Check Right Bounds
             if (this.x >= config.WIDTH - (this.width * 0.5) - 31) {
                 this.x = config.WIDTH - (this.width * 0.5) - 31;
@@ -124,29 +126,15 @@ var objects;
         };
 
         // Respond to player key presses
-        Player.prototype.controlAction = function () {
+        Player.prototype._controlAction = function () {
             // Execute left turn
             if (controls.TURN_LEFT) {
-                this.rotation -= this.turnRate;
-                this.direction += this.turnRate;
-                if (this.direction > 360) {
-                    this.direction = this.turnRate;
-                }
-                this.shield.rotation = this.rotation;
-                this.width = this.getTransformedBounds().width;
-                this.height = this.getTransformedBounds().height;
+                this.turnLeft();
             }
 
             // Execute right turn
             if (controls.TURN_RIGHT) {
-                this.rotation += this.turnRate;
-                this.direction -= this.turnRate;
-                if (this.direction < 0) {
-                    this.direction = 360 - this.turnRate;
-                }
-                this.shield.rotation = this.rotation;
-                this.width = this.getTransformedBounds().width;
-                this.height = this.getTransformedBounds().height;
+                this.turnRight();
             }
 
             // Forward Movement
@@ -163,33 +151,6 @@ var objects;
             if ((controls.FORWARD == false) && (controls.REVERSE == false)) {
                 this.speed = 0;
             }
-        };
-
-        Player.prototype.shieldsUp = function () {
-            this.shield = new objects.Shield(this);
-            this.shield.regX = this.shield.width * 0.5;
-            this.shield.regY = this.shield.height * 0.5;
-            this.shield.x = this.x;
-            this.shield.y = this.y;
-            game.addChild(this.shield);
-        };
-
-        Player.prototype.shieldsDown = function () {
-            game.removeChildAt(layer.PLAYER_SHIELD);
-        };
-
-        // Update player position and condition on screen
-        Player.prototype.update = function () {
-            this.controlAction();
-            this.calcVector();
-            this.calcPosition();
-            this.checkBounds();
-            this.shield.update();
-        };
-
-        Player.prototype.destroy = function () {
-            this.shield.destroy();
-            game.removeChild(this);
         };
         return Player;
     })(objects.GameObject);

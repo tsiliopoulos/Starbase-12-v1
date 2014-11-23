@@ -1,0 +1,1 @@
+{"version":3,"file":"collision.js","sourceRoot":"","sources":["collision.ts"],"names":["managers","managers.Collision","managers.Collision.constructor","managers.Collision.update"],"mappings":"AAAA,IAAO,QAAQ;AAQd,CARD,UAAO,QAAQ;IACXA;QACIC;QACAC,CAACA;QAEDD,6BAAAA;QACAE,CAACA;QACLF,iBAACA;IAADA,CAACA,IAAAD;IANDA,+BAMCA;AACLA,CAACA,+BAAA"}

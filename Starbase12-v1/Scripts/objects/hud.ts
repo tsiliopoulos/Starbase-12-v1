@@ -1,26 +1,34 @@
-﻿module objects {
+﻿// HUD Class
+module objects {
     export class Hud extends createjs.Container {
-        private leftBorder: createjs.Bitmap;
-        private rightBorder: createjs.Bitmap;
-        private phaserEnergy: createjs.Text;
+        // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++
+        private _leftBorder: createjs.Bitmap;
+        private _rightBorder: createjs.Bitmap;
+        private _phaserEnergy: createjs.Text;
+
+        // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
             super();
 
-            this.drawBorders();
-            this.drawStatLabels();
+            this._drawBorders();
+            this._drawStatLabels();
         }
 
-        private drawStatLabels() {
-            this.phaserEnergy = new createjs.Text("PHASER ENERGY", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
-            this.phaserEnergy.x = 40;
-            this.addChild(this.phaserEnergy);
+        // PRIVATE METHODS
+
+        // Draw labels onto the HUD
+        private _drawStatLabels() {
+            this._phaserEnergy = new createjs.Text("PHASER ENERGY", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
+            this._phaserEnergy.x = 40;
+            this.addChild(this._phaserEnergy);
         }
 
-        private drawBorders() {
-            this.leftBorder = new createjs.Bitmap(managers.Assets.loader.getResult("hudLS"));
-            this.rightBorder = new createjs.Bitmap(managers.Assets.loader.getResult("hudRS"));
-            this.rightBorder.x = stage.canvas.width - this.rightBorder.getBounds().width;
-            this.addChild(this.leftBorder, this.rightBorder);
+        // Draw HUD Borders (Yellow)
+        private _drawBorders() {
+            this._leftBorder = new createjs.Bitmap(managers.Assets.loader.getResult("hudLS"));
+            this._rightBorder = new createjs.Bitmap(managers.Assets.loader.getResult("hudRS"));
+            this._rightBorder.x = stage.canvas.width - this._rightBorder.getBounds().width;
+            this.addChild(this._leftBorder, this._rightBorder);
         }
     }
 } 

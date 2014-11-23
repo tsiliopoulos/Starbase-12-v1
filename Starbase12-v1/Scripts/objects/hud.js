@@ -4,27 +4,32 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+// HUD Class
 var objects;
 (function (objects) {
     var Hud = (function (_super) {
         __extends(Hud, _super);
+        // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++
         function Hud() {
             _super.call(this);
 
-            this.drawBorders();
-            this.drawStatLabels();
+            this._drawBorders();
+            this._drawStatLabels();
         }
-        Hud.prototype.drawStatLabels = function () {
-            this.phaserEnergy = new createjs.Text("PHASER ENERGY", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
-            this.phaserEnergy.x = 40;
-            this.addChild(this.phaserEnergy);
+        // PRIVATE METHODS
+        // Draw labels onto the HUD
+        Hud.prototype._drawStatLabels = function () {
+            this._phaserEnergy = new createjs.Text("PHASER ENERGY", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
+            this._phaserEnergy.x = 40;
+            this.addChild(this._phaserEnergy);
         };
 
-        Hud.prototype.drawBorders = function () {
-            this.leftBorder = new createjs.Bitmap(managers.Assets.loader.getResult("hudLS"));
-            this.rightBorder = new createjs.Bitmap(managers.Assets.loader.getResult("hudRS"));
-            this.rightBorder.x = stage.canvas.width - this.rightBorder.getBounds().width;
-            this.addChild(this.leftBorder, this.rightBorder);
+        // Draw HUD Borders (Yellow)
+        Hud.prototype._drawBorders = function () {
+            this._leftBorder = new createjs.Bitmap(managers.Assets.loader.getResult("hudLS"));
+            this._rightBorder = new createjs.Bitmap(managers.Assets.loader.getResult("hudRS"));
+            this._rightBorder.x = stage.canvas.width - this._rightBorder.getBounds().width;
+            this.addChild(this._leftBorder, this._rightBorder);
         };
         return Hud;
     })(createjs.Container);

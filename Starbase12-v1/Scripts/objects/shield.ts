@@ -1,42 +1,57 @@
-﻿module objects {
+﻿// Shield Class
+module objects {
     export class Shield extends createjs.Container implements interfaces.IObject {
-        width: number;
-        height: number;
-        topLeft: createjs.Sprite;
-        topRight: createjs.Sprite;
-        botLeft: createjs.Sprite;
-        botRight: createjs.Sprite;
-        private shipName: string;
-        private entity: objects.GameObject;
+        // PUBLIC PROPERTIES +++++++++++++++++++++++++++++++++++++++++++++++
+        public width: number;
+        public height: number;
+        public topLeft: createjs.Sprite;
+        public topRight: createjs.Sprite;
+        public botLeft: createjs.Sprite;
+        public botRight: createjs.Sprite;
+
+        // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++
+        private _shipName: string;
+        private _entity: objects.GameObject;
+
+        // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor(entity: objects.GameObject) { 
             super();
-            this.entity = entity;
-            this.shipName = this.entity.name;
+            this._entity = entity;
+            this._shipName = this._entity.name;
 
-            this.createShields();
+            this._createShields();
             this.width = this.topLeft.getBounds().width + this.topRight.getBounds().width;
             this.height = this.topLeft.getBounds().height + this.botLeft.getBounds().height;
         }
 
-        private createShields() {
-            this.topLeft = new createjs.Sprite(managers.Assets.atlas, this.shipName + "TL");
-            this.topRight = new createjs.Sprite(managers.Assets.atlas, this.shipName + "TR");
+        // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // Update Method
+        public update() {
+            this.x = this._entity.x;
+            this.y = this._entity.y;
+        }
+
+        // Remove Shield Object from game
+        public destroy() {
+            game.removeChild(this);
+        }
+
+        // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // Create the Shield Objects
+        private _createShields() {
+            this.topLeft = new createjs.Sprite(managers.Assets.atlas, this._shipName + "TL");
+            this.topRight = new createjs.Sprite(managers.Assets.atlas, this._shipName + "TR");
             this.topRight.x = this.topLeft.getBounds().width;
-            this.botLeft = new createjs.Sprite(managers.Assets.atlas, this.shipName + "BL");
+            this.botLeft = new createjs.Sprite(managers.Assets.atlas, this._shipName + "BL");
             this.botLeft.y = this.topLeft.getBounds().height;
-            this.botRight = new createjs.Sprite(managers.Assets.atlas, this.shipName + "BR");
+            this.botRight = new createjs.Sprite(managers.Assets.atlas, this._shipName + "BR");
             this.botRight.x = this.topLeft.getBounds().width;
             this.botRight.y = this.topLeft.getBounds().height;
             this.addChild(this.topLeft, this.topRight, this.botLeft, this.botRight);
         }
 
-        update() {
-            this.x = this.entity.x;
-            this.y = this.entity.y;
-        }
 
-        destroy() {
-            game.removeChild(this);
-        }
     }
 } 

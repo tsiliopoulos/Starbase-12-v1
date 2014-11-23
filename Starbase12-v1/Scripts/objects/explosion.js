@@ -1,18 +1,20 @@
-﻿var __extends = this.__extends || function (d, b) {
+﻿/// <reference path="../managers/asset.ts" />
+var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-/// <reference path="../managers/asset.ts" />
+// Explosion Object Class
 var objects;
 (function (objects) {
     var Explosion = (function (_super) {
         __extends(Explosion, _super);
+        // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++
         function Explosion(x, y) {
-            this.particle = new createjs.Bitmap(managers.Assets.loader.getResult("particle"));
+            this._particle = new createjs.Bitmap(managers.Assets.loader.getResult("particle"));
             this.lifeTime = 0;
-            _super.call(this, this.particle.image);
+            _super.call(this, this._particle.image);
             this.position = new createjs.Point(x, y);
             this.emitterType = createjs.ParticleEmitterType.Emit;
             this.emissionRate = 50;
@@ -47,6 +49,8 @@ var objects;
             this.endSize = 0;
             this.endSizeVar = 5;
         }
+        // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++
+        //Update Method
         Explosion.prototype.update = function () {
             this.lifeTime++;
         };

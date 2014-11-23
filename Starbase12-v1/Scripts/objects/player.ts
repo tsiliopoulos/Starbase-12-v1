@@ -2,28 +2,41 @@
 /// <reference path="../config/keys.ts" />
 /// <reference path="shield.ts" />
 
+// Player Object Class
 module objects {
-    export class Player extends objects.GameObject {
-        turnRate: number;
-        speed: number;
-        direction: number;
-        dx: number;
-        dy: number;
-        shield: objects.Shield;
+    export class Player extends objects.GameObject implements interfaces.IObject {
+        // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
-            this.x = config.WIDTH * 0.5;
-            this.y = config.HEIGHT * 0.5;
             super("ship");
 
             this.name = "ship";
-            this.init();
-            this.assignControls();
+            this._init();
+            this._assignControls();
             this.shieldsUp();
         }
 
+        // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // Update player position and condition on screen
+        public update() {
+            this._controlAction();
+            this.calcVector();
+            this.calcPosition();
+            this._checkBounds();
+            this.shield.update();
+        }
+
+        // Remove Player Object
+        public destroy() {
+            this.shield.destroy();
+            game.removeChild(this);
+        }
+
+        // PRIVATE METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++
+
         // Initialize player properties
-        private init() {
-            this.turnRate = 3;
+        private _init() {
+            this.turnRate = 1;
             this.speed = 0;
             this.direction = 90;
             this.dx = 0;
@@ -31,13 +44,13 @@ module objects {
         }
 
         // Bind key actions to player events
-        private assignControls() {
-            window.onkeydown = this.onControlDown;
-            window.onkeyup = this.onControlUp;
+        private _assignControls() {
+            window.onkeydown = this._onControlDown;
+            window.onkeyup = this._onControlUp;
         }
 
         // Switch statement to activate movement and rotation
-        private onControlDown(event: KeyboardEvent) {
+        private _onControlDown(event: KeyboardEvent) {
             switch (event.keyCode) {
                 case keys.A:
                 case keys.LEFT:
@@ -62,7 +75,7 @@ module objects {
         }
 
         // switch statement to reset controls
-        private onControlUp(event: KeyboardEvent) {
+        private _onControlUp(event: KeyboardEvent) {
             switch (event.keyCode) {
                 case keys.A:
                 case keys.LEFT:
@@ -86,22 +99,8 @@ module objects {
             }
         }
 
-        // Calculate the new x and y coordinates
-        private calcVector() {
-            var radians: number = this.direction * (Math.PI / 180);
-            this.dx = this.speed * Math.cos(radians);
-            this.dy = this.speed * Math.sin(radians);
-            this.dy *= -1;
-        }
-
-        // Calculate player's new position
-        private calcPosition() {
-            this.x += this.dx;
-            this.y += this.dy;
-        }
-
         // Make Sure player stays on screen
-        private checkBounds() {
+        private _checkBounds() {
             // Check Right Bounds
             if (this.x >= config.WIDTH - (this.width * 0.5) - 31) {
                 this.x = config.WIDTH - (this.width * 0.5) - 31;
@@ -121,29 +120,15 @@ module objects {
         }
 
         // Respond to player key presses
-        private controlAction() {
+        private _controlAction() {
             // Execute left turn
             if (controls.TURN_LEFT) {
-                this.rotation -= this.turnRate;
-                this.direction += this.turnRate;
-                if (this.direction > 360) {
-                    this.direction = this.turnRate;
-                }
-                this.shield.rotation = this.rotation;
-                this.width = this.getTransformedBounds().width;
-                this.height = this.getTransformedBounds().height;
+                this.turnLeft();
             }
 
             // Execute right turn
             if (controls.TURN_RIGHT) {
-                this.rotation += this.turnRate;
-                this.direction -= this.turnRate;
-                if (this.direction < 0) {
-                    this.direction = 360 - this.turnRate;
-                }
-                this.shield.rotation = this.rotation;
-                this.width = this.getTransformedBounds().width;
-                this.height = this.getTransformedBounds().height;
+                this.turnRight();
             }
 
             // Forward Movement
@@ -161,34 +146,6 @@ module objects {
                 this.speed = 0;
             }
 
-        }
-
-        shieldsUp() {
-            this.shield = new objects.Shield(this);
-            this.shield.regX = this.shield.width * 0.5;
-            this.shield.regY = this.shield.height * 0.5;
-            this.shield.x = this.x;
-            this.shield.y = this.y;
-            game.addChild(this.shield);
-        }
-
-        shieldsDown() {
-            game.removeChildAt(layer.PLAYER_SHIELD);
-        }
-
-        // Update player position and condition on screen
-        update() {
-            this.controlAction();
-            this.calcVector();
-            this.calcPosition();
-            this.checkBounds();
-            this.shield.update();
-        }
-
-        destroy() {
-
-            this.shield.destroy();
-            game.removeChild(this);
         }
 
     }

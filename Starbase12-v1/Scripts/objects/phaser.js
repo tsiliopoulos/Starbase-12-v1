@@ -4,23 +4,27 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+/// <reference path="crosshair.ts" />
+// Phaser Object Class
 var objects;
 (function (objects) {
     var Phaser = (function (_super) {
         __extends(Phaser, _super);
         function Phaser() {
-            this.drawPhaser();
-            _super.call(this, this.phaserBeam);
+            this._drawPhaser();
+            _super.call(this, this._phaserBeam);
             game.addChildAt(this, layer.PHASER);
         }
-        Phaser.prototype.drawPhaser = function () {
-            this.phaserBeam = new createjs.Graphics();
-            this.phaserBeam.beginStroke("#FFF4CC").setStrokeStyle(2);
-            this.phaserBeam.moveTo(player.x, player.y - 15).lineTo(stage.mouseX, stage.mouseY);
-            this.phaserBeam.beginStroke("#AA4312").setStrokeStyle(5);
-            this.phaserBeam.moveTo(player.x, player.y - 15).lineTo(stage.mouseX, stage.mouseY);
-            this.phaserBeam.beginStroke("#FFF4CC").setStrokeStyle(2);
-            this.phaserBeam.moveTo(player.x, player.y - 15).lineTo(stage.mouseX, stage.mouseY);
+        // PRIVATE METHODS
+        // Create the Phaser Beam
+        Phaser.prototype._drawPhaser = function () {
+            this._phaserBeam = new createjs.Graphics();
+            this._phaserBeam.beginStroke("#FFF4CC").setStrokeStyle(2);
+            this._phaserBeam.moveTo(player.x, player.y - 15).lineTo(crosshair.x, crosshair.y);
+            this._phaserBeam.beginStroke("#AA4312").setStrokeStyle(5);
+            this._phaserBeam.moveTo(player.x, player.y - 15).lineTo(crosshair.x, crosshair.y);
+            this._phaserBeam.beginStroke("#FFF4CC").setStrokeStyle(2);
+            this._phaserBeam.moveTo(player.x, player.y - 15).lineTo(crosshair.x, crosshair.y);
         };
         return Phaser;
     })(createjs.Shape);

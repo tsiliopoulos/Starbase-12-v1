@@ -5,6 +5,7 @@
     d.prototype = new __();
 };
 /// <reference path="../managers/asset.ts" />
+// GAME OBJECT SUPERCLASS
 var objects;
 (function (objects) {
     var GameObject = (function (_super) {
@@ -15,11 +16,58 @@ var objects;
             this.height = this.getBounds().height;
             this.regX = this.width * 0.5;
             this.regY = this.height * 0.5;
+            this.location = new createjs.Point();
+            this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
         }
-        GameObject.prototype.update = function () {
+        // Calculate the game object's new x and y coordinates
+        GameObject.prototype.calcVector = function () {
+            var radians = this.direction * (Math.PI / 180);
+            this.dx = this.speed * Math.cos(radians);
+            this.dy = this.speed * Math.sin(radians);
+            this.dy *= -1;
         };
 
-        GameObject.prototype.destroy = function () {
+        // Calculate the game object's new position
+        GameObject.prototype.calcPosition = function () {
+            this.x += this.dx;
+            this.y += this.dy;
+        };
+
+        GameObject.prototype.shieldsUp = function () {
+            this.shield = new objects.Shield(this);
+            this.shield.regX = this.shield.width * 0.5;
+            this.shield.regY = this.shield.height * 0.5;
+            this.shield.x = this.x;
+            this.shield.y = this.y;
+            game.addChild(this.shield);
+        };
+
+        GameObject.prototype.shieldsDown = function () {
+            game.removeChild(this.shield);
+        };
+
+        GameObject.prototype.turnLeft = function () {
+            this.rotation -= this.turnRate;
+            this.direction += this.turnRate;
+            if (this.direction > 360) {
+                this.direction = this.turnRate;
+            }
+            this.shield.rotation = this.rotation;
+            this.width = this.getTransformedBounds().width;
+            this.height = this.getTransformedBounds().height;
+            this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
+        };
+
+        GameObject.prototype.turnRight = function () {
+            this.rotation += this.turnRate;
+            this.direction -= this.turnRate;
+            if (this.direction < 0) {
+                this.direction = 360 - this.turnRate;
+            }
+            this.shield.rotation = this.rotation;
+            this.width = this.getTransformedBounds().width;
+            this.height = this.getTransformedBounds().height;
+            this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
         };
         return GameObject;
     })(createjs.Sprite);

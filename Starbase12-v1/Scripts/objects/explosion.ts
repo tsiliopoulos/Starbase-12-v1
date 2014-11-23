@@ -1,12 +1,19 @@
 ﻿/// <reference path="../managers/asset.ts" />
+
+// Explosion Object Class
 module objects {
     export class Explosion extends createjs.ParticleEmitter {
-        particle: createjs.Bitmap;
-        lifeTime: number;
+        // PUBLIC PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++++
+        public lifeTime: number;
+
+        // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++++
+        private _particle: createjs.Bitmap;
+
+        // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor(x, y) {
-            this.particle = new createjs.Bitmap(managers.Assets.loader.getResult("particle"));
+            this._particle = new createjs.Bitmap(managers.Assets.loader.getResult("particle"));
             this.lifeTime = 0;
-            super(this.particle.image);
+            super(this._particle.image);
             this.position = new createjs.Point(x, y);
             this.emitterType = createjs.ParticleEmitterType.Emit;
             this.emissionRate = 50;
@@ -43,6 +50,9 @@ module objects {
 
         }
 
+        // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        //Update Method
         update() {
             this.lifeTime++;
         }

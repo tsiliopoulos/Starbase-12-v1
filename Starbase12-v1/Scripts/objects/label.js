@@ -5,10 +5,12 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+// Label Class
 var objects;
 (function (objects) {
     var Label = (function (_super) {
         __extends(Label, _super);
+        // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++
         function Label(x, y, labelText) {
             _super.call(this, labelText, managers.Assets.bitMapFont);
             this.regX = this.getBounds().width * 0.5;
@@ -16,6 +18,7 @@ var objects;
             this.x = x;
             this.y = y;
         }
+        // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++
         // Utility Method to change the default font size
         Label.prototype.fontSize = function (size) {
             var scale = size / this.getBounds().height;

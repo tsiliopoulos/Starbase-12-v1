@@ -12,21 +12,32 @@
 /// <reference path="objects/label.ts" />
 /// <reference path="objects/shield.ts" />
 /// <reference path="objects/player.ts" />
+/// <reference path="objects/enemy.ts" />
+/// <reference path="objects/starbase.ts" />
 /// <reference path="objects/phaser.ts" />
+/// <reference path="managers/beamweapon.ts" />
+/// <reference path="managers/collision.ts" />
 var stage;
 var canvas;
+
 var emitter = [];
 var myBoom = [];
-var phasers = [];
+
+var gameTiles = [];
+
 var stats;
 var started = false;
-var phaserStrafe = false;
 var count = 0;
 
 // Game Objects
 var player;
+var starbase;
+var enemies = [];
 var background;
 var hud;
+
+// Game Managers
+var beamWeapon;
 
 var crosshair;
 var game;
@@ -41,11 +52,20 @@ function init() {
 
     stage = new createjs.Stage(canvas);
 
-    //stage.enableMouseOver(20);
+    //stage.enableMouseOver(10);
     createjs.Ticker.setFPS(config.FPS);
     createjs.Ticker.addEventListener("tick", gameLoop);
 
     gameStart();
+}
+
+// Toggle mouse events when mouse enters / leaves stage
+function checkMouse() {
+    if ((stage.mouseX > config.WIDTH - 31) || (stage.mouseX < 31) || (stage.mouseY > config.HEIGHT - 31) || (stage.mouseY < 31)) {
+        game.mouseEnabled = false;
+    } else {
+        game.mouseEnabled = true;
+    }
 }
 
 function gameLoop(event) {
@@ -55,31 +75,34 @@ function gameLoop(event) {
     if (started) {
         for (var i = 0; i < emitter.length; i++) {
             emitter[i].update();
-            if (emitter[i].lifeTime >= 30) {
+            if (emitter[i].lifeTime >= 15) {
                 //destroyEmitter();
                 game.removeChild(myBoom[i]);
             }
         }
     }
 
-    if (phaserStrafe) {
-        game.removeChild(phasers[phasers.length - 1]);
-        phasers.pop();
-        phasers.push(new objects.Phaser());
-    }
+    starbase.update();
 
     player.update();
+
+    for (var count = 0; count < config.ENEMY_COUNT; count++) {
+        enemies[count].update();
+    }
+
+    beamWeapon.update();
 
     crosshair.update();
 
     game.updateCache();
+
     stage.update(event);
 
     return this.stats.end();
 }
 
+// Setup Game Stats using Stats.js
 function setupStats() {
-    // Uses stats.js
     stats = new Stats();
     stats.setMode(0);
     stats.domElement.style.position = 'absolute';
@@ -88,23 +111,44 @@ function setupStats() {
     document.body.appendChild(stats.domElement);
 }
 
-function setPhaserAim(event) {
-    phasers.push(new objects.Phaser());
-    var phaserSound = createjs.Sound.play("phaser");
-    phaserSound.addEventListener("complete", function (evt) {
-        game.removeChild(phasers[phasers.length - 1]);
-        phasers.pop();
-    });
+// Setup Game Tile Array
+function setupGameTiles() {
+    var count = 0;
+    for (var row = 0; row < config.TILE_ROW; row++) {
+        for (var col = 0; col < config.TILE_COL; col++) {
+            gameTiles[count] = new createjs.Point();
+            gameTiles[count].x = 35 + (col * config.TILE_WIDTH);
+            gameTiles[count].y = 34 + (row * config.TILE_HEIGHT);
+            count++;
+        }
+    }
 }
 
-function getPhaserResult(event) {
-    phaserStrafe = false;
-    game.removeChild(phasers[phasers.length - 1]);
-    phasers.pop();
+// Get Location for game entity from Game Tile Array
+function getLocationFromTile(entity) {
+    var TileLocation = Math.floor(Math.random() * gameTiles.length);
+
+    entity.location.x = gameTiles[TileLocation].x + config.TILE_WIDTH * 0.5;
+    entity.location.y = gameTiles[TileLocation].y + config.TILE_HEIGHT * 0.5;
+    gameTiles.splice(TileLocation, 1);
+    entity.x = entity.location.x;
+    entity.y = entity.location.y;
+    entity.shield.x = entity.x;
+    entity.shield.y = entity.y;
+}
+
+// Create new enemy ships
+function spawnEnemies() {
+    for (var count = 0; count < config.ENEMY_COUNT; count++) {
+        enemies[count] = new objects.Enemy();
+        game.addChild(enemies[count]);
+        getLocationFromTile(enemies[count]);
+    }
 }
 
 function gameStart() {
     setupStats();
+    setupGameTiles();
 
     // the Main object container
     game = new createjs.Container();
@@ -117,9 +161,20 @@ function gameStart() {
     hud = new objects.Hud();
     game.addChildAt(hud, layer.HUD);
 
+    // Create the starbase
+    starbase = new objects.Starbase();
+    game.addChild(starbase);
+    starbase.cache(0, 0, starbase.width, starbase.height);
+    getLocationFromTile(starbase);
+
+    // Create player
     player = new objects.Player();
     game.addChild(player);
     player.cache(0, 0, player.width, player.height);
+    getLocationFromTile(player);
+
+    // Create enemies
+    this.spawnEnemies();
 
     game.addEventListener("click", function () {
         started = true;
@@ -133,16 +188,15 @@ function gameStart() {
         count++;
     });
 
-    game.addEventListener("mousedown", setPhaserAim);
-    game.addEventListener("pressup", getPhaserResult);
-    game.addEventListener("pressmove", function (evt) {
-        phaserStrafe = true;
-    });
+    // Instantiate the Beamweapon Manager
+    beamWeapon = new managers.BeamWeapon();
 
     crosshair = new objects.Crosshair();
     game.addChild(crosshair);
     crosshair.cache(stage.mouseX, stage.mouseY, crosshair.width, crosshair.height);
 
+    /*var myLabel = new objects.Label(config.MIDDLE_X, config.MIDDLE_Y, "Starbase 12");
+    game.addChild(myLabel);*/
     stage.addChild(game);
     game.cache(0, 0, config.WIDTH, config.HEIGHT);
 }

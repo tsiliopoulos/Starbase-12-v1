@@ -1,7 +1,10 @@
 ﻿/// <reference path="../managers/asset.ts" />
 
+// Label Class
 module objects {
     export class Label extends createjs.BitmapText {
+
+        // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor(x: number, y: number, labelText: string) {
             super(labelText, managers.Assets.bitMapFont);
             this.regX = this.getBounds().width * 0.5;
@@ -10,8 +13,10 @@ module objects {
             this.y = y;
         }
 
+        // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++
+
         // Utility Method to change the default font size
-        fontSize(size: number) {
+        public fontSize(size: number) {
             var scale: number = size / this.getBounds().height;
 
             this.scaleX = scale;
