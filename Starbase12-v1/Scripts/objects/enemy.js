@@ -17,6 +17,7 @@ var objects;
             this.shieldsUp();
             this.spawn();
             this._init();
+            this._showHealth();
             this._selectTarget();
         }
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -35,6 +36,9 @@ var objects;
             this._turnToFaceTarget();
             this.calcHitArea();
             this.shield.update();
+            this.integrityLabel.x = this.x;
+            this.integrityLabel.y = this.y;
+            this.integrityLabel.text = Math.floor(this.integrity).toString();
         };
 
         // Destroy Enemy
@@ -62,6 +66,13 @@ var objects;
             var radians = Math.atan2(this.dy, this.dx);
             this._targetAngle = radians * 180 / Math.PI;
             this._targetAngle += 180;
+        };
+
+        // Show Health of Enemy Ship
+        Enemy.prototype._showHealth = function () {
+            this.integrityLabel = new createjs.Text(this.integrity.toString(), config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
+            this.integrityLabel.regX = this.integrityLabel.getBounds().width * 0.5;
+            this.integrityLabel.regY = this.integrityLabel.getBounds().height * 0.5;
         };
 
         // Select a Random Target

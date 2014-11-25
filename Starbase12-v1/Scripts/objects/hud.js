@@ -13,15 +13,30 @@ var objects;
         function Hud() {
             _super.call(this);
 
+            this._init();
             this._drawBorders();
             this._drawStatLabels();
         }
+        // PUBLIC METHODS
+        Hud.prototype.update = function () {
+            this._phaserEnergyValue.text = Math.floor(this.phaserEnergy).toString();
+        };
+
         // PRIVATE METHODS
+        // Initialize values
+        Hud.prototype._init = function () {
+            this.phaserEnergy = 100;
+        };
+
         // Draw labels onto the HUD
         Hud.prototype._drawStatLabels = function () {
-            this._phaserEnergy = new createjs.Text("PHASER ENERGY", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
-            this._phaserEnergy.x = 40;
-            this.addChild(this._phaserEnergy);
+            this._phaserEnergyLabel = new createjs.Text("PHASER ENERGY", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
+            this._phaserEnergyLabel.x = 40;
+            this.addChild(this._phaserEnergyLabel);
+
+            this._phaserEnergyValue = new createjs.Text(this.phaserEnergy.toString(), config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
+            this._phaserEnergyValue.x = 170;
+            this.addChild(this._phaserEnergyValue);
         };
 
         // Draw HUD Borders (Yellow)

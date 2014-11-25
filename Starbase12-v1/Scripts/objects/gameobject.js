@@ -18,9 +18,10 @@ var objects;
             this.regX = this.width * 0.5;
             this.regY = this.height * 0.5;
             this.location = new createjs.Point();
-            this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
+            this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
             this.hit = new createjs.Shape();
             this.hit.graphics.beginFill("#FFF").drawCircle(this.x, this.y, this.radius);
+            this.integrity = 100;
         }
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // Calculate the game object's new x and y coordinates
@@ -66,7 +67,7 @@ var objects;
             this.shield.rotation = this.rotation;
             this.width = this.getTransformedBounds().width;
             this.height = this.getTransformedBounds().height;
-            this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
+            this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
         };
 
         GameObject.prototype.turnRight = function () {
@@ -78,7 +79,7 @@ var objects;
             this.shield.rotation = this.rotation;
             this.width = this.getTransformedBounds().width;
             this.height = this.getTransformedBounds().height;
-            this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
+            this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
         };
         return GameObject;
     })(createjs.Sprite);

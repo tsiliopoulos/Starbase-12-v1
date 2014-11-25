@@ -10,10 +10,7 @@ var objects;
     var Phaser = (function (_super) {
         __extends(Phaser, _super);
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        function Phaser(tracer) {
-            this.target = new createjs.Point();
-            this._tracer = tracer;
-
+        function Phaser() {
             this._drawPhaser();
             _super.call(this, this._phaserBeam);
             game.addChildAt(this, layer.PHASER);
@@ -21,6 +18,7 @@ var objects;
         // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // Create the Phaser Beam
         Phaser.prototype._drawPhaser = function () {
+            this.target = new createjs.Point();
             this.target.x = stage.mouseX;
             this.target.y = stage.mouseY;
             this._phaserBeam = new createjs.Graphics();

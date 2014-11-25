@@ -6,22 +6,54 @@ var managers;
     var Collision = (function () {
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++
         function Collision() {
+            this._distance = utility.Distance.calculate;
         }
         // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++
         // Check for collisions between phasers and enemy shields
-        Collision.prototype.checkPhaserAndShields = function () {
+        Collision.prototype._checkPhaserAndShields = function () {
+            var tracerPosition = this._currentTracer.position;
             for (var enemyNum = 0; enemyNum < config.ENEMY_COUNT; enemyNum++) {
                 for (var arcNum = 0; arcNum < config.ARC_COUNT; arcNum++) {
-                    var distance = utility.Distance.calculate;
+                    var currentArc = enemies[enemyNum].shield.arcs[arcNum];
 
-                    var tracerPosition = enemies[enemyNum].shield.arcs[arcNum].localToLocal(0, 0, this._currentTracer);
-                    var arcCenter = enemies[enemyNum].shield.arcs[arcNum].center;
-                    var arcRadius = enemies[enemyNum].shield.arcs[arcNum].radius;
+                    // Check if current Shield Arc is up
+                    if ((currentArc.strength > 0) && (currentArc.alpha > 0)) {
+                        // Declare Alias Variables in limited scope
+                        var arcX = enemies[enemyNum].shield.arcs[arcNum].center.x;
+                        var arcY = enemies[enemyNum].shield.arcs[arcNum].center.y;
 
-                    if (distance(tracerPosition, arcCenter) < arcRadius) {
-                        enemies[enemyNum].shield.removeChild(enemies[enemyNum].shield.arcs[arcNum]);
-                        console.log(enemies[enemyNum].shield.arcs[arcNum] + " is hit!");
+                        var arcPosition = currentArc.localToGlobal(arcX, arcY);
+                        var arcRadius = currentArc.radius;
+
+                        // Check if there is a hit
+                        if (this._distance(tracerPosition, arcPosition) < (arcRadius + this._currentTracer.radius)) {
+                            currentArc.strength -= (hud.phaserEnergy * 0.10);
+                            currentArc.alpha = currentArc.strength;
+                            if (currentArc.strength <= 0) {
+                                currentArc.alpha = 0;
+                            }
+                            this._currentTracer.speed = 0;
+                        }
                     }
+                }
+            }
+        };
+
+        // Check for collisions between phasers and enemy ship
+        Collision.prototype._checkPhaserAndEnemy = function () {
+            var tracerPosition = this._currentTracer.position;
+            for (var enemyNum = 0; enemyNum < config.ENEMY_COUNT; enemyNum++) {
+                var enemy = enemies[enemyNum];
+                if (this._distance(tracerPosition, enemy.location) < (enemy.radius + this._currentTracer.radius)) {
+                    enemy.integrity -= (hud.phaserEnergy * 0.05);
+
+                    if (enemy.integrity <= 0) {
+                        enemies.splice(enemyNum, 1);
+                        enemy.shieldsDown();
+                        game.removeChild(enemy.integrityLabel);
+                        game.removeChild(enemy);
+                    }
+                    this._currentTracer.speed = 0;
                 }
             }
         };
@@ -29,9 +61,12 @@ var managers;
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++
         // Update Method
         Collision.prototype.update = function () {
-            if (beamWeapon.phasers.length > 0) {
+            if ((beamWeapon.phasers.length > 0) && (beamWeapon.tracers.length > 0)) {
                 this._currentTracer = beamWeapon.tracers[beamWeapon.phasers.length - 1];
-                this.checkPhaserAndShields();
+                if (enemies.length > 0) {
+                    this._checkPhaserAndShields();
+                    this._checkPhaserAndEnemy();
+                }
             }
         };
         return Collision;

@@ -6,13 +6,9 @@ module objects {
 
         // PRIVATE PROPERTIES +++++++++++++++++++++++++++++++++++++++++++++++++++++
         private _phaserBeam: createjs.Graphics;
-        private _tracer: objects.PhaserTracer;
 
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        constructor(tracer) {
-            this.target = new createjs.Point();
-            this._tracer = tracer;
-
+        constructor() {
             this._drawPhaser();
             super(this._phaserBeam);
             game.addChildAt(this, layer.PHASER);
@@ -23,6 +19,7 @@ module objects {
 
         // Create the Phaser Beam
         private _drawPhaser() {
+            this.target = new createjs.Point();
             this.target.x = stage.mouseX;
             this.target.y = stage.mouseY;
             this._phaserBeam = new createjs.Graphics();

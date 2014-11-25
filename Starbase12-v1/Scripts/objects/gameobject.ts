@@ -14,6 +14,7 @@ module objects {
         public radius: number;
         public shield: objects.Shield;
         public hit: createjs.Shape;
+        public integrity: number;
         
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor(SpriteName: string) {
@@ -23,9 +24,10 @@ module objects {
             this.regX = this.width * 0.5;
             this.regY = this.height * 0.5;
             this.location = new createjs.Point();
-            this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
+            this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
             this.hit = new createjs.Shape();
             this.hit.graphics.beginFill("#FFF").drawCircle(this.x, this.y, this.radius);
+            this.integrity = 100;
         }
 
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -73,7 +75,7 @@ module objects {
             this.shield.rotation = this.rotation;
             this.width = this.getTransformedBounds().width;
             this.height = this.getTransformedBounds().height;
-            this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
+            this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
         }
 
         public turnRight() {
@@ -85,7 +87,7 @@ module objects {
             this.shield.rotation = this.rotation;
             this.width = this.getTransformedBounds().width;
             this.height = this.getTransformedBounds().height;
-            this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
+            this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
         }
 
     }

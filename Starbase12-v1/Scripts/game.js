@@ -89,7 +89,7 @@ function gameLoop(event) {
 
     player.update();
 
-    for (var count = 0; count < config.ENEMY_COUNT; count++) {
+    for (var count = 0; count < enemies.length; count++) {
         enemies[count].update();
     }
 
@@ -99,7 +99,8 @@ function gameLoop(event) {
 
     crosshair.update();
 
-    game.updateCache();
+    //game.updateCache();
+    hud.update();
 
     stage.update(event);
 
@@ -147,6 +148,7 @@ function spawnEnemies() {
     for (var count = 0; count < config.ENEMY_COUNT; count++) {
         enemies[count] = new objects.Enemy();
         game.addChild(enemies[count]);
+        game.addChild(enemies[count].integrityLabel);
         getLocationFromTile(enemies[count]);
     }
 }
@@ -193,18 +195,19 @@ function gameStart() {
         count++;
     });
 
+    // Create the Crosshair
+    crosshair = new objects.Crosshair();
+    game.addChild(crosshair);
+    crosshair.cache(stage.mouseX, stage.mouseY, crosshair.width, crosshair.height);
+
     // Instantiate the Beamweapon Manager
     beamWeapon = new managers.BeamWeapon();
 
     collision = new managers.Collision();
 
-    crosshair = new objects.Crosshair();
-    game.addChild(crosshair);
-    crosshair.cache(stage.mouseX, stage.mouseY, crosshair.width, crosshair.height);
-
     /*var myLabel = new objects.Label(config.MIDDLE_X, config.MIDDLE_Y, "Starbase 12");
     game.addChild(myLabel);*/
     stage.addChild(game);
-    game.cache(0, 0, config.WIDTH, config.HEIGHT);
+    //game.cache(0, 0, config.WIDTH, config.HEIGHT);
 }
 //# sourceMappingURL=game.js.map

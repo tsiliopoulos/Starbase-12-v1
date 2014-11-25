@@ -5,10 +5,6 @@ module objects {
         public width: number;
         public height: number;
         public arcs: objects.ShieldArcObject[] = [];
-        public topLeft: objects.ShieldArcObject;
-        public topRight: objects.ShieldArcObject;
-        public botLeft: objects.ShieldArcObject;
-        public botRight: objects.ShieldArcObject;
         public location: createjs.Point;
 
         // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++
@@ -46,14 +42,25 @@ module objects {
 
         // Create the Shield Objects
         private _createShields() {
+            // Top Left Arc
             this.arcs[config.TOP_LEFT] = new objects.ShieldArcObject(this._shipName + "TL");
+
+            // Top Right Arc
             this.arcs[config.TOP_RIGHT] = new objects.ShieldArcObject(this._shipName + "TR");
-            this.arcs[config.TOP_RIGHT].x = this.arcs[config.TOP_LEFT].width;
+            this.arcs[config.TOP_RIGHT].x = this.arcs[config.TOP_LEFT].x + this.arcs[config.TOP_LEFT].width;
+            this.arcs[config.TOP_RIGHT].center.x += this.arcs[config.TOP_LEFT].width;
+
+            // Bottom Left Arc
             this.arcs[config.BOT_LEFT] = new objects.ShieldArcObject(this._shipName + "BL");
             this.arcs[config.BOT_LEFT].y = this.arcs[config.TOP_LEFT].height;
+            this.arcs[config.BOT_LEFT].center.y += this.arcs[config.TOP_LEFT].height;
+
+            // Bottom Right Arc
             this.arcs[config.BOT_RIGHT] = new objects.ShieldArcObject(this._shipName + "BR");
             this.arcs[config.BOT_RIGHT].x = this.arcs[config.TOP_LEFT].width;
             this.arcs[config.BOT_RIGHT].y = this.arcs[config.TOP_LEFT].height;
+            this.arcs[config.BOT_RIGHT].center.x += this.arcs[config.TOP_LEFT].width;
+            this.arcs[config.BOT_RIGHT].center.y += this.arcs[config.TOP_LEFT].height;
 
             for (var arcNum = 0; arcNum < 4; arcNum++) {
                 this.addChild(this.arcs[arcNum]);

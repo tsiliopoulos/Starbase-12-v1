@@ -17,7 +17,7 @@ module objects {
             this.center = new createjs.Point();
             this.center.x = this.width * 0.5;
             this.center.y = this.height * 0.5;
-            this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
+            this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
             this.strength = 100;
         }
     }
