@@ -39,7 +39,8 @@
     // Game Play Constants
     config.PHASER_LEVEL = 100;
     config.SHIP_HULL = 100;
+    config.ARC_COUNT = 4;
     config.SHIELD_LEVEL = 100;
-    config.ENEMY_COUNT = 5;
+    config.ENEMY_COUNT = 1;
 })(config || (config = {}));
 //# sourceMappingURL=config.js.map

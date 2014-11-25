@@ -12,6 +12,7 @@ var objects;
 (function (objects) {
     var Player = (function (_super) {
         __extends(Player, _super);
+        // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++
         function Player() {
             _super.call(this, "ship");
 
@@ -20,12 +21,16 @@ var objects;
             this._assignControls();
             this.shieldsUp();
         }
-        // PUBLIC METHODS
+        // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++
         // Update player position and condition on screen
         Player.prototype.update = function () {
             this._controlAction();
             this.calcVector();
             this.calcPosition();
+            this.calcHitArea();
+            this.target.x = stage.mouseX;
+            this.target.y = stage.mouseY;
+            this._calculateTargetAngle();
             this._checkBounds();
             this.shield.update();
         };
@@ -36,7 +41,7 @@ var objects;
             game.removeChild(this);
         };
 
-        // PRIVATE METHODS
+        // PRIVATE METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++
         // Initialize player properties
         Player.prototype._init = function () {
             this.turnRate = 1;
@@ -44,6 +49,18 @@ var objects;
             this.direction = 90;
             this.dx = 0;
             this.dy = 0;
+            this.target = new createjs.Point();
+        };
+
+        // Calculate the angle to the target
+        Player.prototype._calculateTargetAngle = function () {
+            this.dx = this.x - this.target.x;
+            this.dy = this.y - this.target.y;
+            this.dy *= -1;
+
+            var radians = Math.atan2(this.dy, this.dx);
+            this.targetAngle = radians * 180 / Math.PI;
+            this.targetAngle += 180;
         };
 
         // Bind key actions to player events

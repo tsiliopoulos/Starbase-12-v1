@@ -11,9 +11,28 @@ module objects {
 
         // Update Method
         public update() {
+           
+            
+            
             this.x = stage.mouseX;
             this.y = stage.mouseY;
             this._checkBounds();
+            this.calcHitArea();
+
+            /*var pt1 = new createjs.Point();
+            var pt2 = new createjs.Point();
+            pt2.x = this.x;
+            pt2.y = this.y;
+
+            var hit = new createjs.Shape();
+            hit.graphics.beginFill("#000").drawRect(0, 0, label2.getMeasuredWidth(), label2.getMeasuredHeight());
+
+            var distance = utility.Distance.calculate(player.location, pt2);
+            console.log("ship to crosshair " + distance);
+            var distance2 = utility.Distance.calculate(player.location, starbase.location);
+            console.log("ship to starbase " + distance2);*/
+
+            
         }
 
         // Remove Crosshair object from game

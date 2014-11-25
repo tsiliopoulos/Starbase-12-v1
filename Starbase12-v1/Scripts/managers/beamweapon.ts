@@ -1,54 +1,22 @@
 ﻿// BeamWeapon Manager Class
 module managers {
     export class BeamWeapon {
-        // Public Properties
+        // PUBLIC PROPERTIES +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         public phasers: objects.Phaser[] = [];
+        public tracers: objects.PhaserTracer[] = [];
+        public phaserSound: createjs.SoundInstance;
 
-        // Private Properties
+        // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         private _strafe: boolean = false;
-        private _phaserSound: createjs.SoundInstance;
 
-        // Constructor
+        // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
-
             game.on("mousedown", this._phaserStart, this);
             game.on("pressup", this.destroy, this);
             game.on("pressmove", this._phaserStrafing, this);
         }
 
-        // Set phaser state to Strafing
-        private _phaserStrafing() {
-            // check to see if phaser sound is still playing
-            if (this._phaserSound.playState != createjs.Sound.PLAY_FINISHED) {
-                this._strafe = true;
-            }
-        }
-
-        // Fire Phaser and Play Sound
-        private _phaserStart() {
-
-            var phaser = new objects.Phaser();
-            this.phasers.push(phaser);
-
-            this._phaserSound = createjs.Sound.play("phaser");
-            this._phaserSound.on("complete", this.destroy, this);
-
-        }
-
-        // Check if player is firing and moving mouse
-        private _checkPhaserStrafe() {
-            if (this._strafe) {
-                var phaser = new objects.Phaser();
-                this._removePhaser();
-                this.phasers.push(phaser);
-            }
-        }
-
-        // Remove last Phaser
-        private _removePhaser() {
-            game.removeChild(this.phasers[this.phasers.length - 1]);
-            this.phasers.pop();
-        }
+        // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         // Stop Phaser
         public destroy() {
@@ -56,9 +24,61 @@ module managers {
             this._removePhaser();
         }
 
+        // Update Phaser
         public update() {
+            for (var tracerNum = 0; tracerNum < this.tracers.length; tracerNum++) {
+                this.tracers[tracerNum].update();
+            }
             this._checkPhaserStrafe();
 
         }
+
+        // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        // Set phaser state to Strafing
+        private _phaserStrafing() {
+            // check to see if phaser sound is still playing
+            if (this.phaserSound.playState != createjs.Sound.PLAY_FINISHED) {
+                this._strafe = true;
+            }
+        }
+
+        // Fire Phaser and Play Sound
+        private _phaserStart() {
+            var tracer = new objects.PhaserTracer();
+            this.tracers.push(tracer);
+
+            this.phaserSound = createjs.Sound.play("phaser");
+            this.phaserSound.on("complete", this.destroy, this);
+
+            var phaser = new objects.Phaser(tracer);
+            this.phasers.push(phaser);
+
+        }
+
+        // Check if player is firing and moving mouse
+        private _checkPhaserStrafe() {
+            if (this._strafe) {
+                var tracer = new objects.PhaserTracer();
+                var phaser = new objects.Phaser(tracer);
+                
+                this._removePhaser();
+                this.tracers.push(tracer);
+                this.phasers.push(phaser);
+
+            }
+        }
+
+        // Remove last Phaser
+        private _removePhaser() {
+            
+            game.removeChild(this.phasers[this.phasers.length - 1]);
+            this.phasers.pop();
+
+            //game.removeChild(this.tracers[this.tracers.length - 1]);
+            this.tracers.pop();
+        }
+
+
     }
 }

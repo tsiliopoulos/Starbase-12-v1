@@ -5,6 +5,10 @@
 // Player Object Class
 module objects {
     export class Player extends objects.GameObject implements interfaces.IObject {
+        // PUBLIC PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++
+        public target: createjs.Point;
+        public targetAngle: number;
+
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
             super("ship");
@@ -22,8 +26,13 @@ module objects {
             this._controlAction();
             this.calcVector();
             this.calcPosition();
+            this.calcHitArea();
+            this.target.x = stage.mouseX;
+            this.target.y = stage.mouseY;
+            this._calculateTargetAngle();
             this._checkBounds();
             this.shield.update();
+            
         }
 
         // Remove Player Object
@@ -41,6 +50,18 @@ module objects {
             this.direction = 90;
             this.dx = 0;
             this.dy = 0;
+            this.target = new createjs.Point();
+        }
+
+        // Calculate the angle to the target
+        private _calculateTargetAngle() {
+            this.dx = this.x - this.target.x;
+            this.dy = this.y - this.target.y;
+            this.dy *= -1;
+
+            var radians = Math.atan2(this.dy, this.dx);
+            this.targetAngle = radians * 180 / Math.PI;
+            this.targetAngle += 180;
         }
 
         // Bind key actions to player events

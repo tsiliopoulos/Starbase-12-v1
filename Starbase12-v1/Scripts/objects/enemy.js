@@ -33,6 +33,7 @@ var objects;
         // Update Method
         Enemy.prototype.update = function () {
             this._turnToFaceTarget();
+            this.calcHitArea();
             this.shield.update();
         };
 

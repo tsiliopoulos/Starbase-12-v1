@@ -12,18 +12,22 @@ var objects;
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++
         function Shield(entity) {
             _super.call(this);
+            this.arcs = [];
             this._entity = entity;
             this._shipName = this._entity.name;
+            this.location = new createjs.Point();
 
             this._createShields();
-            this.width = this.topLeft.getBounds().width + this.topRight.getBounds().width;
-            this.height = this.topLeft.getBounds().height + this.botLeft.getBounds().height;
+            this.width = this.arcs[config.TOP_LEFT].getBounds().width + this.arcs[config.TOP_RIGHT].getBounds().width;
+            this.height = this.arcs[config.TOP_LEFT].getBounds().height + this.arcs[config.BOT_LEFT].getBounds().height;
         }
         // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++
         // Update Method
         Shield.prototype.update = function () {
             this.x = this._entity.x;
             this.y = this._entity.y;
+            this.location.x = this.x;
+            this.location.y = this.y;
         };
 
         // Remove Shield Object from game
@@ -34,15 +38,18 @@ var objects;
         // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++++
         // Create the Shield Objects
         Shield.prototype._createShields = function () {
-            this.topLeft = new createjs.Sprite(managers.Assets.atlas, this._shipName + "TL");
-            this.topRight = new createjs.Sprite(managers.Assets.atlas, this._shipName + "TR");
-            this.topRight.x = this.topLeft.getBounds().width;
-            this.botLeft = new createjs.Sprite(managers.Assets.atlas, this._shipName + "BL");
-            this.botLeft.y = this.topLeft.getBounds().height;
-            this.botRight = new createjs.Sprite(managers.Assets.atlas, this._shipName + "BR");
-            this.botRight.x = this.topLeft.getBounds().width;
-            this.botRight.y = this.topLeft.getBounds().height;
-            this.addChild(this.topLeft, this.topRight, this.botLeft, this.botRight);
+            this.arcs[config.TOP_LEFT] = new objects.ShieldArcObject(this._shipName + "TL");
+            this.arcs[config.TOP_RIGHT] = new objects.ShieldArcObject(this._shipName + "TR");
+            this.arcs[config.TOP_RIGHT].x = this.arcs[config.TOP_LEFT].width;
+            this.arcs[config.BOT_LEFT] = new objects.ShieldArcObject(this._shipName + "BL");
+            this.arcs[config.BOT_LEFT].y = this.arcs[config.TOP_LEFT].height;
+            this.arcs[config.BOT_RIGHT] = new objects.ShieldArcObject(this._shipName + "BR");
+            this.arcs[config.BOT_RIGHT].x = this.arcs[config.TOP_LEFT].width;
+            this.arcs[config.BOT_RIGHT].y = this.arcs[config.TOP_LEFT].height;
+
+            for (var arcNum = 0; arcNum < 4; arcNum++) {
+                this.addChild(this.arcs[arcNum]);
+            }
         };
         return Shield;
     })(createjs.Container);

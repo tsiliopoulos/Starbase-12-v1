@@ -10,10 +10,12 @@
 /// <reference path="objects/crosshair.ts" />
 /// <reference path="objects/explosion.ts" />
 /// <reference path="objects/label.ts" />
+/// <reference path="objects/shieldarcobject.ts" />
 /// <reference path="objects/shield.ts" />
 /// <reference path="objects/player.ts" />
 /// <reference path="objects/enemy.ts" />
 /// <reference path="objects/starbase.ts" />
+/// <reference path="objects/phasertracer.ts" />
 /// <reference path="objects/phaser.ts" />
 /// <reference path="managers/beamweapon.ts" />
 /// <reference path="managers/collision.ts" />
@@ -38,6 +40,7 @@ var hud;
 
 // Game Managers
 var beamWeapon;
+var collision;
 
 var crosshair;
 var game;
@@ -51,8 +54,8 @@ function init() {
     canvas = config.ARCADE_CANVAS;
 
     stage = new createjs.Stage(canvas);
+    stage.enableMouseOver(20);
 
-    //stage.enableMouseOver(10);
     createjs.Ticker.setFPS(config.FPS);
     createjs.Ticker.addEventListener("tick", gameLoop);
 
@@ -91,6 +94,8 @@ function gameLoop(event) {
     }
 
     beamWeapon.update();
+
+    collision.update();
 
     crosshair.update();
 
@@ -190,6 +195,8 @@ function gameStart() {
 
     // Instantiate the Beamweapon Manager
     beamWeapon = new managers.BeamWeapon();
+
+    collision = new managers.Collision();
 
     crosshair = new objects.Crosshair();
     game.addChild(crosshair);

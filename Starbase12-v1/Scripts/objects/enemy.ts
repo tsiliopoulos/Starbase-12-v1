@@ -34,6 +34,7 @@
         // Update Method
         public update() {
             this._turnToFaceTarget();
+            this.calcHitArea();
             this.shield.update();
         }
 

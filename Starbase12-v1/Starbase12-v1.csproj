@@ -187,8 +187,10 @@
     <TypeScriptCompile Include="Scripts\objects\gameobject.ts" />
     <TypeScriptCompile Include="Scripts\objects\hud.ts" />
     <TypeScriptCompile Include="Scripts\objects\label.ts" />
+    <TypeScriptCompile Include="Scripts\objects\phasertracer.ts" />
     <TypeScriptCompile Include="Scripts\objects\player.ts" />
     <TypeScriptCompile Include="Scripts\objects\shield.ts" />
+    <TypeScriptCompile Include="Scripts\objects\shieldarcobject.ts" />
     <TypeScriptCompile Include="Scripts\objects\starbase.ts" />
     <TypeScriptCompile Include="Scripts\utility\distance.ts" />
   </ItemGroup>

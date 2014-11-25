@@ -38,7 +38,8 @@
     // Game Play Constants
     export var PHASER_LEVEL: number = 100;
     export var SHIP_HULL: number = 100;
+    export var ARC_COUNT: number = 4;
     export var SHIELD_LEVEL: number = 100;
-    export var ENEMY_COUNT: number = 5;
+    export var ENEMY_COUNT: number = 1;
 
 }

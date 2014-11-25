@@ -2,6 +2,7 @@
 // GAME OBJECT SUPERCLASS
 module objects {
     export class GameObject extends createjs.Sprite {
+        // PUBLIC PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         public width: number;
         public height: number;
         public turnRate: number;
@@ -12,6 +13,9 @@ module objects {
         public location: createjs.Point;
         public radius: number;
         public shield: objects.Shield;
+        public hit: createjs.Shape;
+        
+        // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor(SpriteName: string) {
             super(managers.Assets.atlas, SpriteName); 
             this.width = this.getBounds().width;
@@ -20,7 +24,11 @@ module objects {
             this.regY = this.height * 0.5;
             this.location = new createjs.Point();
             this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
+            this.hit = new createjs.Shape();
+            this.hit.graphics.beginFill("#FFF").drawCircle(this.x, this.y, this.radius);
         }
+
+        // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         // Calculate the game object's new x and y coordinates
         public calcVector() {
@@ -34,6 +42,13 @@ module objects {
         public calcPosition() {
             this.x += this.dx;
             this.y += this.dy;
+        }
+
+        // Calculate the game object's hit area
+        public calcHitArea() {
+            this.hit.x = this.x;
+            this.hit.y = this.y;
+            this.hitArea = this.hit;
         }
 
         public shieldsUp() {

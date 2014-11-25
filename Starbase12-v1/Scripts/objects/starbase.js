@@ -29,6 +29,7 @@ var objects;
                     this.turnLeft();
                     break;
             }
+            this.calcHitArea();
             this.shield.update();
         };
 

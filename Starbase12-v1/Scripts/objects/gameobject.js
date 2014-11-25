@@ -10,6 +10,7 @@ var objects;
 (function (objects) {
     var GameObject = (function (_super) {
         __extends(GameObject, _super);
+        // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         function GameObject(SpriteName) {
             _super.call(this, managers.Assets.atlas, SpriteName);
             this.width = this.getBounds().width;
@@ -18,7 +19,10 @@ var objects;
             this.regY = this.height * 0.5;
             this.location = new createjs.Point();
             this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
+            this.hit = new createjs.Shape();
+            this.hit.graphics.beginFill("#FFF").drawCircle(this.x, this.y, this.radius);
         }
+        // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // Calculate the game object's new x and y coordinates
         GameObject.prototype.calcVector = function () {
             var radians = this.direction * (Math.PI / 180);
@@ -31,6 +35,13 @@ var objects;
         GameObject.prototype.calcPosition = function () {
             this.x += this.dx;
             this.y += this.dy;
+        };
+
+        // Calculate the game object's hit area
+        GameObject.prototype.calcHitArea = function () {
+            this.hit.x = this.x;
+            this.hit.y = this.y;
+            this.hitArea = this.hit;
         };
 
         GameObject.prototype.shieldsUp = function () {

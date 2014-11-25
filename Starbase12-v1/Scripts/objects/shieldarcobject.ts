@@ -1,0 +1,24 @@
+﻿// Shield Arc Object Super Class
+module objects {
+    export class ShieldArcObject extends createjs.Sprite {
+         // PUBLIC PROPERTIES +++++++++++++++++++++++++++++++++++++++++++++++++++++
+        public width: number;
+        public height: number;
+        public center: createjs.Point;
+        public radius: number;
+        public strength: number;
+
+        // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        constructor(SpriteName: string) {
+            super(managers.Assets.atlas, SpriteName);
+            this.name = SpriteName;
+            this.width = this.getBounds().width;
+            this.height = this.getBounds().height;
+            this.center = new createjs.Point();
+            this.center.x = this.width * 0.5;
+            this.center.y = this.height * 0.5;
+            this.width >= this.height ? this.radius = this.width * 0.5 : this.radius = this.height * 0.5;
+            this.strength = 100;
+        }
+    }
+} 
