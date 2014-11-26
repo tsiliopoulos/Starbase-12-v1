@@ -127,7 +127,10 @@
     <Content Include="assets\images\startbaseTopRightRed.png" />
     <Content Include="assets\images\startbaseTopRightYellow.png" />
     <Content Include="assets\images\startbaseYellow.png" />
+    <Content Include="assets\sounds\disruptor.mp3" />
     <Content Include="assets\sounds\phaser.mp3" />
+    <Content Include="assets\sounds\photon.mp3" />
+    <Content Include="assets\sounds\shield.mp3" />
     <Content Include="assets\sounds\smallexplosion.mp3" />
     <Content Include="css\app.css" />
     <Content Include="css\normalize.css" />
@@ -180,6 +183,7 @@
     <TypeScriptCompile Include="Scripts\libs\require.d.ts" />
     <TypeScriptCompile Include="Scripts\managers\collision.ts" />
     <TypeScriptCompile Include="Scripts\managers\beamweapon.ts" />
+    <TypeScriptCompile Include="Scripts\objects\disruptor.ts" />
     <TypeScriptCompile Include="Scripts\objects\enemy.ts" />
     <TypeScriptCompile Include="Scripts\objects\phaser.ts" />
     <TypeScriptCompile Include="Scripts\objects\crosshair.ts" />

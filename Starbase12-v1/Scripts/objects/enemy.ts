@@ -3,24 +3,21 @@
         // PUBLIC PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++
         public target: objects.GameObject;
         public integrityLabel: createjs.Text;
+        public targetAngle: number;
+        public disruptorFire: boolean;
 
         // PRIVATE PROPERTIES +++++++++++++++++++++++++++++++++++++++++++++
-        private _targetAngle: number;
-        
-         
+        private _firingAngle: number;
+
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
             super("klingon");
-            
             this.name = "klingon";
-
             this.shieldsUp();
             this.spawn();
             this._init();
             this._showHealth();
             this._selectTarget();
-            
-
         }
 
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -38,6 +35,7 @@
         // Update Method
         public update() {
             this._turnToFaceTarget();
+            this._fireDisruptor();
             this.calcHitArea();
             this.shield.update();
             this.integrityLabel.x = this.x;
@@ -58,6 +56,8 @@
             this.turnRate = 0.25;
             this.speed = 0;
             this.direction = 90;
+            this._firingAngle = this.direction;
+            this.disruptorFire = false;
             this.dx = 0;
             this.dy = 0;
         }
@@ -69,8 +69,8 @@
             this.dy *= -1;
 
             var radians = Math.atan2(this.dy, this.dx);
-            this._targetAngle = radians * 180 / Math.PI;
-            this._targetAngle += 180;
+            this.targetAngle = radians * 180 / Math.PI;
+            this.targetAngle += 180;
         }
 
         // Show Health of Enemy Ship
@@ -96,15 +96,31 @@
             this._calculateTargetAngle();
 
             // Perform Right Turn;
-            if (this._targetAngle > this.direction) {
+            if (this.targetAngle > this.direction) {
                 this.turnLeft();
+                this._firingAngle = this.targetAngle - this.direction;
             }
 
             // Perform Left Turn
-            if (this._targetAngle < this.direction) {
+            if (this.targetAngle < this.direction) {
                 this.turnRight();
+                this._firingAngle = this.direction - this.targetAngle;
             }
 
+            if (this.targetAngle == this.direction) {
+                this._firingAngle = 0;
+            }
+
+        }
+
+        // If firing angle is less than 30 degrees then fire disruptors
+        private _fireDisruptor() {
+            if (this._firingAngle <= 30) {
+                this.disruptorFire = true;
+            }
+            else {
+                this.disruptorFire = false;
+            }
         }
 
     }

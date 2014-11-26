@@ -11,6 +11,7 @@ var objects;
         __extends(Phaser, _super);
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         function Phaser() {
+            this.name = "phaser";
             this._drawPhaser();
             _super.call(this, this._phaserBeam);
             game.addChildAt(this, layer.PHASER);

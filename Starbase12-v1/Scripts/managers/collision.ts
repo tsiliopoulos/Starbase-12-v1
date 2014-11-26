@@ -19,7 +19,7 @@ module managers {
         // Check for collisions between phasers and enemy shields
         private _checkPhaserAndShields() {
             var tracerPosition = this._currentTracer.position;
-            for (var enemyNum = 0; enemyNum < config.ENEMY_COUNT; enemyNum++) {
+            for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
                 for (var arcNum = 0; arcNum < config.ARC_COUNT; arcNum++) {   
                     var currentArc = enemies[enemyNum].shield.arcs[arcNum];
                     // Check if current Shield Arc is up
@@ -34,8 +34,9 @@ module managers {
                         // Check if there is a hit
                         if (this._distance(tracerPosition, arcPosition) < (arcRadius + this._currentTracer.radius)) {
                             currentArc.strength -= (hud.phaserEnergy * 0.10);
-                            currentArc.alpha = currentArc.strength;
-                            if (currentArc.strength <= 0) {
+                            currentArc.alpha = currentArc.strength * 0.01;
+                            createjs.Sound.play("shield");
+                            if (currentArc.strength <= 1) {
                                 currentArc.alpha = 0;
                             }
                             this._currentTracer.speed = 0;
@@ -50,12 +51,13 @@ module managers {
         // Check for collisions between phasers and enemy ship
         private _checkPhaserAndEnemy() {
             var tracerPosition = this._currentTracer.position;
-            for (var enemyNum = 0; enemyNum < config.ENEMY_COUNT; enemyNum++) {
+            for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
                 var enemy = enemies[enemyNum];
                 if (this._distance(tracerPosition, enemy.location) < (enemy.radius + this._currentTracer.radius)) {
                     enemy.integrity -= (hud.phaserEnergy * 0.05);
 
-                    if (enemy.integrity <= 0) {
+                    if (enemy.integrity <= 1) {
+                        createjs.Sound.play("explosion");
                         enemies.splice(enemyNum, 1);
                         enemy.shieldsDown();
                         game.removeChild(enemy.integrityLabel);

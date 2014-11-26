@@ -9,6 +9,7 @@ module objects {
 
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
+            this.name = "phaser";
             this._drawPhaser();
             super(this._phaserBeam);
             game.addChildAt(this, layer.PHASER);

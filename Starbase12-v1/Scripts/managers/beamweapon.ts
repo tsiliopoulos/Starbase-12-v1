@@ -4,10 +4,14 @@ module managers {
         // PUBLIC PROPERTIES +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         public phasers: objects.Phaser[] = [];
         public tracers: objects.PhaserTracer[] = [];
+        public disruptors: objects.Disruptor[] = [];
         public phaserSound: createjs.SoundInstance;
+        public disruptorSound: createjs.SoundInstance;
+        public randomShot: number[] = [];
 
         // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         private _strafe: boolean = false;
+        private _disruptorNum: number = 0;
 
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
@@ -29,6 +33,11 @@ module managers {
             this._checkPhaserStrafe();
             this._updateTracer();
             this._regeneratePhaser();
+
+            this._checkDisruptorFire();
+            this._updateDisruptor();
+
+            
         }
 
         // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -100,6 +109,34 @@ module managers {
                     hud.phaserEnergy = 0;
                 }
 
+            }
+        }
+
+        // Check if enemy is firing disruptor
+        private _checkDisruptorFire() {
+            for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
+                this.randomShot[enemyNum] = Math.floor(Math.random() * 30 + 20);
+                if ((enemies[enemyNum].disruptorFire) && (this._disruptorNum % this.randomShot[enemyNum] == 0)) {
+                    this.disruptorSound = createjs.Sound.play("disruptor");
+                    var disruptor = new objects.Disruptor(enemies[enemyNum]);
+                    disruptor.rotation = enemies[enemyNum].rotation;
+                    this.disruptors.push(disruptor);
+                    game.addChild(disruptor);
+                }
+                
+            }
+            this._disruptorNum++;
+        }
+
+        // Update Disruptor
+        private _updateDisruptor() {
+            for (var Num = 0; Num < this.disruptors.length; Num++) {
+                var disruptor = this.disruptors[Num];
+                disruptor.update();
+                if (disruptor.speed == 0) {
+                    this.disruptors.splice(Num, 1);
+                    game.removeChild(disruptor);
+                }
             }
         }
 

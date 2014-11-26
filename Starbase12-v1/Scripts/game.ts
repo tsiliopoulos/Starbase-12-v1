@@ -13,6 +13,7 @@
 /// <reference path="objects/shieldarcobject.ts" />
 /// <reference path="objects/shield.ts" />
 /// <reference path="objects/player.ts" />
+/// <reference path="objects/disruptor.ts" />
 /// <reference path="objects/enemy.ts" />
 /// <reference path="objects/starbase.ts" />
 /// <reference path="objects/phasertracer.ts" />
@@ -195,7 +196,8 @@ function gameStart(): void {
     // Create enemies
     this.spawnEnemies();
 
-    game.addEventListener("click", function () {
+
+    /* game.addEventListener("click", function () {
         started = true;
 
         createjs.Sound.play("explosion");
@@ -205,7 +207,7 @@ function gameStart(): void {
         
         myBoom[count].addChild(emitter[count]);
         count++;
-    });
+    });*/
 
     
     // Create the Crosshair
