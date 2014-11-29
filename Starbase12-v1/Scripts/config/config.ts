@@ -10,6 +10,7 @@
     export var HEIGHT: number = 600;
     export var MIDDLE_X: number = 400;
     export var MIDDLE_Y: number = 300;
+    export var BORDER: number = 31;
 
     // Tile Constants
     export var TILE_WIDTH: number = 146;
@@ -37,9 +38,10 @@
 
     // Game Play Constants
     export var PHASER_LEVEL: number = 100;
-    export var SHIP_HULL: number = 100;
+    export var INTEGRITY: number = 100;
     export var ARC_COUNT: number = 4;
-    export var SHIELD_LEVEL: number = 100;
     export var ENEMY_COUNT: number = 3;
+
+
 
 }

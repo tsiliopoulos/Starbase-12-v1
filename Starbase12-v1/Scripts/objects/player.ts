@@ -33,7 +33,7 @@ module objects {
             this.target.x = stage.mouseX;
             this.target.y = stage.mouseY;
             this._calculateTargetAngle();
-            this._checkBounds();
+            this.checkBounds();
             this.shield.update();
         }
 
@@ -122,25 +122,7 @@ module objects {
             }
         }
 
-        // Make Sure player stays on screen
-        private _checkBounds() {
-            // Check Right Bounds
-            if (this.x >= config.WIDTH - (this.width * 0.5) - 31) {
-                this.x = config.WIDTH - (this.width * 0.5) - 31;
-            }
-            // Check Left Bounds
-            if (this.x <= (this.width * 0.5) + 31) {
-                this.x = (this.width * 0.5) + 31;
-            }
-            // Check Lower Bounds
-            if (this.y >= config.HEIGHT - (this.height * 0.5) -31) {
-                this.y = config.HEIGHT - (this.height * 0.5) -31;
-            }
-            // Check Upper Bounds
-            if (this.y <= (this.height * 0.5) +31) {
-                this.y = (this.height * 0.5) +31 ;
-            }
-        }
+       
 
         // Respond to player key presses
         private _controlAction() {
@@ -162,7 +144,7 @@ module objects {
             // Reverse Movement
             if (controls.REVERSE) {
                 this.speed = -2;
-            } 
+            }
 
             // Forward Stop
             if ((controls.FORWARD == false) && (controls.REVERSE == false)) {

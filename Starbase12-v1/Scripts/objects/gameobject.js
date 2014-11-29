@@ -58,6 +58,7 @@ var objects;
             game.removeChild(this.shield);
         };
 
+        // Turn Left Method
         GameObject.prototype.turnLeft = function () {
             this.rotation -= this.turnRate;
             this.direction += this.turnRate;
@@ -70,6 +71,7 @@ var objects;
             this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
         };
 
+        // Turn Right Method
         GameObject.prototype.turnRight = function () {
             this.rotation += this.turnRate;
             this.direction -= this.turnRate;
@@ -80,6 +82,33 @@ var objects;
             this.width = this.getTransformedBounds().width;
             this.height = this.getTransformedBounds().height;
             this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
+        };
+
+        // Make Sure game object stays on screen
+        GameObject.prototype.checkBounds = function () {
+            // Check Right Bounds
+            if (this.x >= config.WIDTH - (this.width * 0.5) - config.BORDER) {
+                this.x = config.WIDTH - (this.width * 0.5) - config.BORDER;
+                this.speed = 0;
+            }
+
+            // Check Left Bounds
+            if (this.x <= (this.width * 0.5) + config.BORDER) {
+                this.x = (this.width * 0.5) + config.BORDER;
+                this.speed = 0;
+            }
+
+            // Check Lower Bounds
+            if (this.y >= config.HEIGHT - (this.height * 0.5) - config.BORDER) {
+                this.y = config.HEIGHT - (this.height * 0.5) - config.BORDER;
+                this.speed = 0;
+            }
+
+            // Check Upper Bounds
+            if (this.y <= (this.height * 0.5) + config.BORDER) {
+                this.y = (this.height * 0.5) + config.BORDER;
+                this.speed = 0;
+            }
         };
         return GameObject;
     })(createjs.Sprite);

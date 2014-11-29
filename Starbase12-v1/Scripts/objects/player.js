@@ -33,7 +33,7 @@ var objects;
             this.target.x = stage.mouseX;
             this.target.y = stage.mouseY;
             this._calculateTargetAngle();
-            this._checkBounds();
+            this.checkBounds();
             this.shield.update();
         };
 
@@ -118,29 +118,6 @@ var objects;
                 case keys.SPACE:
                     controls.PHOTON = false;
                     break;
-            }
-        };
-
-        // Make Sure player stays on screen
-        Player.prototype._checkBounds = function () {
-            // Check Right Bounds
-            if (this.x >= config.WIDTH - (this.width * 0.5) - 31) {
-                this.x = config.WIDTH - (this.width * 0.5) - 31;
-            }
-
-            // Check Left Bounds
-            if (this.x <= (this.width * 0.5) + 31) {
-                this.x = (this.width * 0.5) + 31;
-            }
-
-            // Check Lower Bounds
-            if (this.y >= config.HEIGHT - (this.height * 0.5) - 31) {
-                this.y = config.HEIGHT - (this.height * 0.5) - 31;
-            }
-
-            // Check Upper Bounds
-            if (this.y <= (this.height * 0.5) + 31) {
-                this.y = (this.height * 0.5) + 31;
             }
         };
 

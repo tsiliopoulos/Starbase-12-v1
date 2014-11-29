@@ -18,10 +18,10 @@ module managers {
 
         // Check for collisions between phasers and enemy shields
         private _checkPhaserAndEnemyShields() {
-            var tracerPosition = this._currentTracer.position;
+            var tracerPosition = this._currentTracer.location;
             for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
                 var enemy = enemies[enemyNum];
-                if (utility.distance(this._currentTracer.position, enemy.shield.location) < (this._currentTracer.radius + enemy.shield.radius)) {
+                if (utility.distance(this._currentTracer.location, enemy.shield.location) < (this._currentTracer.radius + enemy.shield.radius)) {
                     for (var arcNum = 0; arcNum < config.ARC_COUNT; arcNum++) {
                         var currentArc = enemy.shield.arcs[arcNum];
                         // Check if current Shield Arc is up
@@ -53,7 +53,7 @@ module managers {
 
         // Check for collisions between phasers and enemy ship
         private _checkPhaserAndEnemy() {
-            var tracerPosition = this._currentTracer.position;
+            var tracerPosition = this._currentTracer.location;
             for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
                 var enemy = enemies[enemyNum];
                 if (utility.distance(tracerPosition, enemy.location) < (enemy.radius * 0.5 + this._currentTracer.radius)) {
@@ -74,7 +74,7 @@ module managers {
 
         // Collision between Disruptor and Starbase Shields
         private _checkDisruptorAndStarbaseShields() {
-            var disruptorPosition = this._currentDisruptor.position;
+            var disruptorPosition = this._currentDisruptor.location;
             for (var arcNum = 0; arcNum < config.ARC_COUNT; arcNum++) {
                 var currentArc = starbase.shield.arcs[arcNum];
                 // Check if current Shield Arc is up
@@ -113,7 +113,7 @@ module managers {
 
         // Check for collisions between Disruptor and Starbase Hull
         private _checkDisruptorAndStarbase() {
-            var disruptorPosition = this._currentDisruptor.position;
+            var disruptorPosition = this._currentDisruptor.location;
             var distance = utility.distance(disruptorPosition, starbase.location);
             if (utility.distance(disruptorPosition, starbase.location) < (starbase.radius * 0.5 + this._currentDisruptor.radius)) {
 
@@ -137,7 +137,7 @@ module managers {
 
         // Collision between Disruptor and Starbase Shields
         private _checkDisruptorAndPlayerShields() {
-            var disruptorPosition = this._currentDisruptor.position;
+            var disruptorPosition = this._currentDisruptor.location;
             for (var arcNum = 0; arcNum < config.ARC_COUNT; arcNum++) {
                 var currentArc = player.shield.arcs[arcNum];
                 // Check if current Shield Arc is up
@@ -176,7 +176,7 @@ module managers {
 
         // Check for collisions between Disruptor and Starbase Hull
         private _checkDisruptorAndPlayer() {
-            var disruptorPosition = this._currentDisruptor.position;
+            var disruptorPosition = this._currentDisruptor.location;
             var distance = utility.distance(disruptorPosition, player.location);
             if (utility.distance(disruptorPosition, player.location) < (player.radius * 0.5 + this._currentDisruptor.radius)) {
                 player.integrity -= 5;

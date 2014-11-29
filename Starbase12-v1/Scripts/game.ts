@@ -13,7 +13,6 @@
 /// <reference path="objects/crosshair.ts" />
 /// <reference path="objects/explosion.ts" />
 /// <reference path="objects/label.ts" />
-/// <reference path="objects/shieldarcobject.ts" />
 /// <reference path="objects/shield.ts" />
 /// <reference path="objects/player.ts" />
 /// <reference path="objects/disruptor.ts" />
