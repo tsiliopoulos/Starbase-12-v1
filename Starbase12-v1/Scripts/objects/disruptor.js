@@ -4,6 +4,7 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+// Disruptor Bullet Class
 var objects;
 (function (objects) {
     var Disruptor = (function (_super) {
@@ -21,6 +22,7 @@ var objects;
             this.position = new createjs.Point();
 
             this._init();
+            this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
         }
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // disruptor update
@@ -43,10 +45,10 @@ var objects;
             this.y = this._enemy.y;
             this._origin.x = this._enemy.x;
             this._origin.y = this._enemy.y;
-            this._width = this.getBounds().width;
-            this._height = this.getBounds().height;
-            this.regX = this._width * 0.5;
-            this.regY = this._height * 0.5;
+            this.width = this.getBounds().width;
+            this.height = this.getBounds().height;
+            this.regX = this.width * 0.5;
+            this.regY = this.height * 0.5;
 
             this._dx = 0;
             this._dy = 0;

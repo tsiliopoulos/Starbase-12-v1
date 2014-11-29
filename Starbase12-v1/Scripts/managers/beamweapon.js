@@ -15,6 +15,9 @@ var managers;
             game.on("mousedown", this._phaserStart, this);
             game.on("pressup", this.destroy, this);
             game.on("pressmove", this._phaserStrafing, this);
+
+            this.starbaseAlive = true;
+            this.playerAlive = true;
         }
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // Stop Phaser
@@ -53,6 +56,7 @@ var managers;
             }
         };
 
+        // Regenerate phaser energy over time
         BeamWeapon.prototype._regeneratePhaser = function () {
             hud.phaserEnergy = hud.phaserEnergy + 0.25;
             if (hud.phaserEnergy > 100) {
@@ -102,17 +106,20 @@ var managers;
 
         // Check if enemy is firing disruptor
         BeamWeapon.prototype._checkDisruptorFire = function () {
-            for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
-                this.randomShot[enemyNum] = Math.floor(Math.random() * 30 + 20);
-                if ((enemies[enemyNum].disruptorFire) && (this._disruptorNum % this.randomShot[enemyNum] == 0)) {
-                    this.disruptorSound = createjs.Sound.play("disruptor");
-                    var disruptor = new objects.Disruptor(enemies[enemyNum]);
-                    disruptor.rotation = enemies[enemyNum].rotation;
-                    this.disruptors.push(disruptor);
-                    game.addChild(disruptor);
+            // Ensure starbase or player is alive in order to fire disruptor
+            if ((this.starbaseAlive) || (this.playerAlive)) {
+                for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
+                    var enemy = enemies[enemyNum];
+                    if ((enemy.disruptorFire) && (this._disruptorNum % enemy.rateOfFire == 0)) {
+                        this.disruptorSound = createjs.Sound.play("disruptor");
+                        var disruptor = new objects.Disruptor(enemy);
+                        disruptor.rotation = enemy.rotation;
+                        this.disruptors.push(disruptor);
+                        game.addChild(disruptor);
+                    }
                 }
+                this._disruptorNum++;
             }
-            this._disruptorNum++;
         };
 
         // Update Disruptor

@@ -1,12 +1,14 @@
-﻿module objects {
+﻿// Disruptor Bullet Class
+module objects {
     export class Disruptor extends createjs.Sprite {
         // PUBLIC PROPERTIES
         public position: createjs.Point;
         public radius: number;
         public speed: number;
+        public width: number;
+        public height: number;
 
         // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        private _tracer: createjs.Graphics;
         private _dx: number;
         private _dy: number;
         private _direction: number;
@@ -14,8 +16,8 @@
         private _enemy: objects.Enemy;
         private _origin: createjs.Point;
         private _target: createjs.Point;
-        private _width: number;
-        private _height: number;
+
+
 
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor(enemy: objects.Enemy) {
@@ -27,8 +29,9 @@
             this._target = new createjs.Point();
             //this._target = this._enemy.target.location;
             this.position = new createjs.Point();
-
+           
             this._init();
+            this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
         }
 
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -53,10 +56,10 @@
             this.y = this._enemy.y;
             this._origin.x = this._enemy.x;
             this._origin.y = this._enemy.y;
-            this._width = this.getBounds().width;
-            this._height = this.getBounds().height;
-            this.regX = this._width * 0.5;
-            this.regY = this._height * 0.5;
+            this.width = this.getBounds().width;
+            this.height = this.getBounds().height;
+            this.regX = this.width * 0.5;
+            this.regY = this.height * 0.5;
 
             this._dx = 0;
             this._dy = 0;

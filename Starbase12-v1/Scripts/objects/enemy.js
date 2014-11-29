@@ -38,6 +38,7 @@ var objects;
             this.integrityLabel.x = this.x;
             this.integrityLabel.y = this.y;
             this.integrityLabel.text = Math.floor(this.integrity).toString();
+            this._checkTargetAlive();
         };
 
         // Destroy Enemy
@@ -56,6 +57,7 @@ var objects;
             this.disruptorFire = false;
             this.dx = 0;
             this.dy = 0;
+            this.rateOfFire = Math.floor(Math.random() * 20 + 50);
         };
 
         // Calculate the angle to the target
@@ -83,6 +85,13 @@ var objects;
                 this.target = player;
             } else {
                 this.target = starbase;
+            }
+        };
+
+        // Check to see if target is still alive
+        Enemy.prototype._checkTargetAlive = function () {
+            if (!beamWeapon.starbaseAlive) {
+                this.target = player;
             }
         };
 

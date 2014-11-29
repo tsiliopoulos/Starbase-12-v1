@@ -15,7 +15,7 @@ module objects {
         public shield: objects.Shield;
         public hit: createjs.Shape;
         public integrity: number;
-        
+
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor(SpriteName: string) {
             super(managers.Assets.atlas, SpriteName); 

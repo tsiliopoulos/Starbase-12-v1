@@ -5,6 +5,7 @@
         public integrityLabel: createjs.Text;
         public targetAngle: number;
         public disruptorFire: boolean;
+        public rateOfFire: number;
 
         // PRIVATE PROPERTIES +++++++++++++++++++++++++++++++++++++++++++++
         private _firingAngle: number;
@@ -41,6 +42,7 @@
             this.integrityLabel.x = this.x;
             this.integrityLabel.y = this.y;
             this.integrityLabel.text = Math.floor(this.integrity).toString();
+            this._checkTargetAlive();
         }
 
         // Destroy Enemy
@@ -60,6 +62,7 @@
             this.disruptorFire = false;
             this.dx = 0;
             this.dy = 0;
+            this.rateOfFire = Math.floor(Math.random() * 20 + 50);
         }
 
         // Calculate the angle to the target
@@ -89,6 +92,14 @@
             else {
                 this.target = starbase;
             }
+        }
+
+        // Check to see if target is still alive
+        private _checkTargetAlive() {
+            if (!beamWeapon.starbaseAlive) {
+                this.target = player;
+            }
+
         }
 
         // Turn to face the current target at the turn rate

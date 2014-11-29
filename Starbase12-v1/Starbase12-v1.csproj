@@ -197,6 +197,9 @@
     <TypeScriptCompile Include="Scripts\objects\shieldarcobject.ts" />
     <TypeScriptCompile Include="Scripts\objects\starbase.ts" />
     <TypeScriptCompile Include="Scripts\utility\distance.ts" />
+    <TypeScriptCompile Include="Scripts\utility\drawdebugrect.ts" />
+    <TypeScriptCompile Include="Scripts\utility\getarcstring.ts" />
+    <TypeScriptCompile Include="Scripts\utility\showLocation.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

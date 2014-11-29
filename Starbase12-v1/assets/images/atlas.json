@@ -38,7 +38,8 @@
     [217, 66, 62, 62], 
     [217, 130, 62, 62], 
     [232, 194, 62, 62], 
-    [2, 206, 100, 100]
+    [2, 206, 100, 100], 
+    [68, 372, 10, 10]
 ],
 "animations": {
     
@@ -78,10 +79,11 @@
         "startbaseTopRight":[33], 
         "startbaseTopRightRed":[34], 
         "startbaseTopRightYellow":[35], 
-        "startbaseYellow":[36]
+        "startbaseYellow":[36], 
+        "tracer":[37]
 },
 "texturepacker": [
-        "SmartUpdateHash: $TexturePacker:SmartUpdate:73861e934a28176a14a13a2c15c7b8f0:76e61e66477ed5434a1ccc107d989bdd:cbce6b53f0f49e0bf15173c25c41f876$",
+        "SmartUpdateHash: $TexturePacker:SmartUpdate:b02c25722e6a6795a346347334639e80:adc32c68ecf90b5e36f0b703167f267f:cbce6b53f0f49e0bf15173c25c41f876$",
         "Created with TexturePacker (http://www.texturepacker.com) for EaselJS"
 ]
 }

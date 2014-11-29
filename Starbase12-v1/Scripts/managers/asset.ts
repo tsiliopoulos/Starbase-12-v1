@@ -53,7 +53,8 @@
             [217, 66, 62, 62],
             [217, 130, 62, 62],
             [232, 194, 62, 62],
-            [2, 206, 100, 100]
+            [2, 206, 100, 100],
+            [68, 372, 10, 10]
         ],
         "animations": {
 
@@ -93,11 +94,10 @@
             "starbaseTR": [33],
             "starbaseTRR": [34],
             "starbaseTRY": [35],
-            "starbaseY": [36]
+            "starbaseY": [36],
+            "tracer": [37]
         }
     };
-
-
 
     // BitMap Font SpriteSheet Data object
     var fontData = {

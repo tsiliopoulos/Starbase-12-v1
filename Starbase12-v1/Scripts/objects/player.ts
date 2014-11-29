@@ -9,6 +9,7 @@ module objects {
         public target: createjs.Point;
         public targetAngle: number;
 
+
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
             super("ship");
@@ -26,13 +27,14 @@ module objects {
             this._controlAction();
             this.calcVector();
             this.calcPosition();
+            this.location.x = this.x;
+            this.location.y = this.y;
             this.calcHitArea();
             this.target.x = stage.mouseX;
             this.target.y = stage.mouseY;
             this._calculateTargetAngle();
             this._checkBounds();
             this.shield.update();
-            
         }
 
         // Remove Player Object

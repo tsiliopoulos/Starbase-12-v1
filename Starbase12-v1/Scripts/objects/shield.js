@@ -20,6 +20,7 @@ var objects;
             this._createShields();
             this.width = this.arcs[config.TOP_LEFT].getBounds().width + this.arcs[config.TOP_RIGHT].getBounds().width;
             this.height = this.arcs[config.TOP_LEFT].getBounds().height + this.arcs[config.BOT_LEFT].getBounds().height;
+            this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
         }
         // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++
         // Update Method
@@ -28,6 +29,7 @@ var objects;
             this.y = this._entity.y;
             this.location.x = this.x;
             this.location.y = this.y;
+            this._updateArcs();
         };
 
         // Remove Shield Object from game
@@ -38,28 +40,33 @@ var objects;
         // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++++
         // Create the Shield Objects
         Shield.prototype._createShields = function () {
-            // Top Left Arc
-            this.arcs[config.TOP_LEFT] = new objects.ShieldArcObject(this._shipName + "TL");
+            for (var arcNum = 0; arcNum < config.ARC_COUNT; arcNum++) {
+                var arcString = utility.getArcString(this._shipName, arcNum);
+                this.arcs[arcNum] = new objects.GameObject(arcString);
+                this.arcs[arcNum].regX = this.x;
+                this.arcs[arcNum].regY = this.y;
+            }
 
-            // Top Right Arc
-            this.arcs[config.TOP_RIGHT] = new objects.ShieldArcObject(this._shipName + "TR");
+            // Top Right Arc Offset
             this.arcs[config.TOP_RIGHT].x = this.arcs[config.TOP_LEFT].x + this.arcs[config.TOP_LEFT].width;
-            this.arcs[config.TOP_RIGHT].center.x += this.arcs[config.TOP_LEFT].width;
 
-            // Bottom Left Arc
-            this.arcs[config.BOT_LEFT] = new objects.ShieldArcObject(this._shipName + "BL");
+            // Bottom Left Arc Offset
             this.arcs[config.BOT_LEFT].y = this.arcs[config.TOP_LEFT].height;
-            this.arcs[config.BOT_LEFT].center.y += this.arcs[config.TOP_LEFT].height;
 
-            // Bottom Right Arc
-            this.arcs[config.BOT_RIGHT] = new objects.ShieldArcObject(this._shipName + "BR");
+            // Bottom Right Arc Offset
             this.arcs[config.BOT_RIGHT].x = this.arcs[config.TOP_LEFT].width;
             this.arcs[config.BOT_RIGHT].y = this.arcs[config.TOP_LEFT].height;
-            this.arcs[config.BOT_RIGHT].center.x += this.arcs[config.TOP_LEFT].width;
-            this.arcs[config.BOT_RIGHT].center.y += this.arcs[config.TOP_LEFT].height;
 
             for (var arcNum = 0; arcNum < 4; arcNum++) {
                 this.addChild(this.arcs[arcNum]);
+            }
+        };
+
+        // Update the location of each shield arc
+        Shield.prototype._updateArcs = function () {
+            for (var arcNum = 0; arcNum < config.ARC_COUNT; arcNum++) {
+                this.arcs[arcNum].location.x = this.arcs[arcNum].x;
+                this.arcs[arcNum].location.y = this.arcs[arcNum].y;
             }
         };
         return Shield;

@@ -3,7 +3,10 @@
 /// <reference path="config/layer.ts" />
 /// <reference path="config/controls.ts" />
 /// <reference path="managers/asset.ts" />
+/// <reference path="utility/showlocation.ts" />
+/// <reference path="utility/drawdebugrect.ts" />
 /// <reference path="utility/distance.ts" />
+/// <reference path="utility/getarcstring.ts" />
 /// <reference path="interfaces/iobject.ts" />
 /// <reference path="objects/gameobject.ts" />
 /// <reference path="objects/hud.ts" />
@@ -181,13 +184,14 @@ function gameStart(): void {
     // Create the starbase
     starbase = new objects.Starbase();
     game.addChild(starbase);
-    starbase.cache(0, 0, starbase.width, starbase.height);
+    game.addChild(starbase.integrityLabel);
+    //starbase.cache(0, 0, starbase.width, starbase.height);
     getLocationFromTile(starbase);
 
     // Create player
     player = new objects.Player();
     game.addChild(player);
-    player.cache(0, 0, player.width, player.height);
+    //player.cache(0, 0, player.width, player.height);
     getLocationFromTile(player);
 
 
@@ -218,6 +222,7 @@ function gameStart(): void {
     // Instantiate the Beamweapon Manager
     beamWeapon = new managers.BeamWeapon();
 
+    // Manage Collisions
     collision = new managers.Collision();
 
     /*var myLabel = new objects.Label(config.MIDDLE_X, config.MIDDLE_Y, "Starbase 12");

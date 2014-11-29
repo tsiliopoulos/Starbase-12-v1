@@ -27,6 +27,8 @@ var objects;
             this._controlAction();
             this.calcVector();
             this.calcPosition();
+            this.location.x = this.x;
+            this.location.y = this.y;
             this.calcHitArea();
             this.target.x = stage.mouseX;
             this.target.y = stage.mouseY;

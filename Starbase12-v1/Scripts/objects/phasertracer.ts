@@ -1,15 +1,16 @@
 ﻿// Phaser Tracer Class
 module objects {
-    export class PhaserTracer extends createjs.Shape {
-
+    export class PhaserTracer extends createjs.Sprite {
         // PUBLIC PROPERTIES
         public position: createjs.Point;
         public radius: number;
         public speed: number;
+        private width: number;
+        private height: number;
         public range: number;
 
+
         // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        private _tracer: createjs.Graphics;
         private _dx: number;
         private _dy: number;
         private _direction: number;
@@ -17,31 +18,30 @@ module objects {
        
         private _origin: createjs.Point;
         private _target: createjs.Point;
-        private _width: number;
-        private _height: number;
+        
         
         
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
+            super(managers.Assets.atlas, "tracer");
             this.name = "tracer";
             this._origin = new createjs.Point();
             this._target = new createjs.Point();
             this.position = new createjs.Point();
-           
-            this._drawBullet();
-            super(this._tracer);
+          
             this._init();
+            this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
         }
 
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // Tracer update
         update() {
-            this.position.x = this.x;
-            this.position.y = this.y;
             this._calcVector();
             this._calcPosition();
+            this.position.x = this.x;
+            this.position.y = this.y;
             this._checkBounds();
-            this._travelled = utility.Distance.calculate(this._origin, this.position);
+            this._travelled = utility.distance(this._origin, this.position);
             if (this._travelled >= this.range) {
                 this.speed = 0;
             }
@@ -59,11 +59,10 @@ module objects {
             this.y = player.y;
             this._origin.x = this.x;
             this._origin.y = this.y;
-            this.setBounds(this.x, this.y, 20, 20);
-            this._width = this.getBounds().width;
-            this._height = this.getBounds().height;
-            this.regX = this._width * 0.5;
-            this.regY = this._height * 0.5;
+            this.width = this.getBounds().width;
+            this.height = this.getBounds().height;
+            this.regX = this.width * 0.5;
+            this.regY = this.height * 0.5;
 
             this._dx = 0;
             this._dy = 0;
@@ -72,15 +71,9 @@ module objects {
             this._target.x = stage.mouseX;
             this._target.y = stage.mouseY;
 
-            this.range = utility.Distance.calculate(this._origin, this._target);
+            this.range = utility.distance(this._origin, this._target);
             
             this.alpha = 0;
-        }
-
-        private _drawBullet() {
-            this.radius = 10;
-            this._tracer = new createjs.Graphics();
-            this._tracer.beginFill("#000").drawCircle(0, 0, this.radius);
         }
 
         // Calculate the game object's new x and y coordinates

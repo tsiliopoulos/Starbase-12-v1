@@ -25,7 +25,7 @@ var objects;
             this._phaserBeam = new createjs.Graphics();
             this._phaserBeam.beginStroke("#FFF4CC").setStrokeStyle(2);
             this._phaserBeam.moveTo(player.x, player.y - 15).lineTo(this.target.x, this.target.y);
-            this._phaserBeam.beginStroke("#AA4312").setStrokeStyle(5);
+            this._phaserBeam.beginStroke("#AA4312").setStrokeStyle(6);
             this._phaserBeam.moveTo(player.x, player.y - 15).lineTo(this.target.x, this.target.y);
             this._phaserBeam.beginStroke("#FFF4CC").setStrokeStyle(2);
             this._phaserBeam.moveTo(player.x, player.y - 15).lineTo(this.target.x, this.target.y);
