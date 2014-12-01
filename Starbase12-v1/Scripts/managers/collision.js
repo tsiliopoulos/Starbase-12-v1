@@ -31,7 +31,7 @@ var managers;
                                 currentArc.integrity -= 5 * (hud.phaserEnergy * 0.01);
                                 currentArc.alpha = currentArc.integrity * 0.01;
                                 createjs.Sound.play("shield");
-                                if (currentArc.integrity <= 1) {
+                                if (currentArc.integrity < 1) {
                                     currentArc.alpha = 0;
                                 }
                                 this._currentTracer.speed = 0;
@@ -50,7 +50,7 @@ var managers;
                 if (utility.distance(tracerPosition, enemy.location) < (enemy.radius * 0.5 + this._currentTracer.radius)) {
                     enemy.integrity -= 5 * (hud.phaserEnergy * 0.01);
 
-                    if (enemy.integrity <= 1) {
+                    if (enemy.integrity < 1) {
                         createjs.Sound.play("explosion");
                         enemies.splice(enemyNum, 1);
                         enemy.shieldsDown();
@@ -58,6 +58,59 @@ var managers;
                         game.removeChild(enemy);
                     }
                     this._currentTracer.speed = 0;
+                }
+            }
+        };
+
+        // Check for collisions between photons and enemy shields
+        Collision.prototype._checkPhotonAndEnemyShields = function () {
+            var photonPosition = this._currentPhoton.location;
+            for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
+                var enemy = enemies[enemyNum];
+                if (utility.distance(this._currentPhoton.location, enemy.shield.location) < (this._currentPhoton.radius + enemy.shield.radius)) {
+                    for (var arcNum = 0; arcNum < config.ARC_COUNT; arcNum++) {
+                        var currentArc = enemy.shield.arcs[arcNum];
+
+                        // Check if current Shield Arc is up
+                        if ((currentArc.integrity > 0) && (currentArc.alpha > 0)) {
+                            // Declare Alias Variables in limited scope
+                            var arcX = currentArc.x;
+                            var arcY = currentArc.y;
+
+                            var arcPosition = currentArc.localToGlobal(arcX, arcY);
+                            var arcRadius = currentArc.radius;
+
+                            // Check if there is a hit
+                            if (utility.distance(photonPosition, arcPosition) < (arcRadius + this._currentPhoton.radius)) {
+                                currentArc.integrity -= 25;
+                                currentArc.alpha = currentArc.integrity * 0.01;
+                                createjs.Sound.play("shield");
+                                if (currentArc.integrity < 1) {
+                                    currentArc.alpha = 0;
+                                }
+                                this._currentPhoton.speed = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Check for collisions between photons and enemy ship
+        Collision.prototype._checkPhotonAndEnemy = function () {
+            var photonPosition = this._currentPhoton.location;
+            for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
+                var enemy = enemies[enemyNum];
+                if (utility.distance(photonPosition, enemy.location) < (enemy.radius * 0.5 + this._currentPhoton.radius)) {
+                    enemy.integrity -= 25;
+                    if (enemy.integrity < 1) {
+                        createjs.Sound.play("explosion");
+                        enemies.splice(enemyNum, 1);
+                        enemy.shieldsDown();
+                        game.removeChild(enemy.integrityLabel);
+                        game.removeChild(enemy);
+                    }
+                    this._currentPhoton.speed = 0;
                 }
             }
         };
@@ -82,13 +135,13 @@ var managers;
                         currentArc.integrity -= 5;
                         createjs.Sound.play("shield");
                         var arcString = utility.getArcString("starbase", arcNum);
-                        if ((currentArc.integrity > 36) && (currentArc.integrity <= 60)) {
+                        if ((currentArc.integrity > 35) && (currentArc.integrity < 61)) {
                             arcString += "Y";
                             currentArc.gotoAndPlay(arcString);
-                        } else if ((currentArc.integrity > 1) && (currentArc.integrity <= 35)) {
+                        } else if ((currentArc.integrity > 1) && (currentArc.integrity < 36)) {
                             arcString += "R";
                             currentArc.gotoAndPlay(arcString);
-                        } else if (currentArc.integrity <= 1) {
+                        } else if (currentArc.integrity < 1) {
                             currentArc.alpha = 0;
                         }
                         this._currentDisruptor.speed = 0;
@@ -103,13 +156,13 @@ var managers;
             var distance = utility.distance(disruptorPosition, starbase.location);
             if (utility.distance(disruptorPosition, starbase.location) < (starbase.radius * 0.5 + this._currentDisruptor.radius)) {
                 starbase.integrity -= 5;
-                if (starbase.integrity <= 60) {
+                if ((starbase.integrity > 35) && (starbase.integrity < 61)) {
                     starbase.gotoAndPlay("starbaseY");
                 }
-                if (starbase.integrity <= 35) {
+                if ((starbase.integrity > 1) && (starbase.integrity < 35)) {
                     starbase.gotoAndPlay("starbaseR");
                 }
-                if (starbase.integrity <= 1) {
+                if (starbase.integrity < 1) {
                     beamWeapon.starbaseAlive = false;
                     createjs.Sound.play("explosion");
                     starbase.shieldsDown();
@@ -140,13 +193,13 @@ var managers;
                         currentArc.integrity -= 5;
                         createjs.Sound.play("shield");
                         var arcString = utility.getArcString("ship", arcNum);
-                        if ((currentArc.integrity > 36) && (currentArc.integrity <= 60)) {
+                        if ((currentArc.integrity > 35) && (currentArc.integrity < 61)) {
                             arcString += "Y";
                             currentArc.gotoAndPlay(arcString);
-                        } else if ((currentArc.integrity > 1) && (currentArc.integrity <= 35)) {
+                        } else if ((currentArc.integrity > 1) && (currentArc.integrity < 36)) {
                             arcString += "R";
                             currentArc.gotoAndPlay(arcString);
-                        } else if (currentArc.integrity <= 1) {
+                        } else if (currentArc.integrity < 1) {
                             currentArc.alpha = 0;
                         }
                         this._currentDisruptor.speed = 0;
@@ -162,11 +215,11 @@ var managers;
             if (utility.distance(disruptorPosition, player.location) < (player.radius * 0.5 + this._currentDisruptor.radius)) {
                 player.integrity -= 5;
                 hud.hullIntegrity = player.integrity;
-                if ((player.integrity > 36) && (player.integrity <= 60)) {
+                if ((player.integrity > 35) && (player.integrity < 61)) {
                     player.gotoAndPlay("shipY");
-                } else if ((player.integrity > 1) && (player.integrity <= 35)) {
+                } else if ((player.integrity > 1) && (player.integrity < 36)) {
                     player.gotoAndPlay("shipR");
-                } else if (player.integrity <= 1) {
+                } else if (player.integrity < 1) {
                     beamWeapon.playerAlive = false;
                     createjs.Sound.play("explosion");
                     player.shieldsDown();
@@ -184,6 +237,14 @@ var managers;
                 if (enemies.length > 0) {
                     this._checkPhaserAndEnemyShields();
                     this._checkPhaserAndEnemy();
+                }
+            }
+
+            if (beamWeapon.photons.length > 0) {
+                this._currentPhoton = beamWeapon.photons[beamWeapon.photons.length - 1];
+                if (enemies.length > 0) {
+                    this._checkPhotonAndEnemyShields();
+                    this._checkPhotonAndEnemy();
                 }
             }
 

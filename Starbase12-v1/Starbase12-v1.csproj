@@ -75,6 +75,18 @@
     <Content Include="assets\images\klingonTopLeft.png" />
     <Content Include="assets\images\klingonTopRight.png" />
     <Content Include="assets\images\particle_base.png" />
+    <Content Include="assets\images\photon animation\photon1.png" />
+    <Content Include="assets\images\photon animation\photon10.png" />
+    <Content Include="assets\images\photon animation\photon11.png" />
+    <Content Include="assets\images\photon animation\photon12.png" />
+    <Content Include="assets\images\photon animation\photon2.png" />
+    <Content Include="assets\images\photon animation\photon3.png" />
+    <Content Include="assets\images\photon animation\photon4.png" />
+    <Content Include="assets\images\photon animation\photon5.png" />
+    <Content Include="assets\images\photon animation\photon6.png" />
+    <Content Include="assets\images\photon animation\photon7.png" />
+    <Content Include="assets\images\photon animation\photon8.png" />
+    <Content Include="assets\images\photon animation\photon9.png" />
     <Content Include="assets\images\ship.png" />
     <Content Include="assets\images\ShipBotLeft.png" />
     <Content Include="assets\images\ShipBotLeftRed.png" />
@@ -105,6 +117,7 @@
     <Content Include="assets\fonts\startrek.woff2" />
     <Content Include="assets\fonts\font.fnt" />
     <Content Include="assets\fonts\startrek.otf" />
+    <Content Include="assets\images\photon animation\.DS_Store" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -192,13 +205,16 @@
     <TypeScriptCompile Include="Scripts\objects\hud.ts" />
     <TypeScriptCompile Include="Scripts\objects\label.ts" />
     <TypeScriptCompile Include="Scripts\objects\phasertracer.ts" />
+    <TypeScriptCompile Include="Scripts\objects\photon.ts" />
     <TypeScriptCompile Include="Scripts\objects\player.ts" />
     <TypeScriptCompile Include="Scripts\objects\shield.ts" />
     <TypeScriptCompile Include="Scripts\objects\starbase.ts" />
     <TypeScriptCompile Include="Scripts\utility\distance.ts" />
     <TypeScriptCompile Include="Scripts\utility\drawdebugrect.ts" />
     <TypeScriptCompile Include="Scripts\utility\getarcstring.ts" />
+    <TypeScriptCompile Include="Scripts\utility\quadrant.ts" />
     <TypeScriptCompile Include="Scripts\utility\showLocation.ts" />
+    <TypeScriptCompile Include="Scripts\utility\textcolour.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -8,7 +8,10 @@ module objects {
         // PUBLIC PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++
         public target: createjs.Point;
         public targetAngle: number;
+        public photonFired: boolean;
 
+        // PRIVATE PROPERTIES +++++++++++++++++++++++++++++++++++++++++++++
+        private _firingAngle: number;
 
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
@@ -25,6 +28,7 @@ module objects {
         // Update player position and condition on screen
         public update() {
             this._controlAction();
+            this._checkPhoton();
             this.calcVector();
             this.calcPosition();
             this.location.x = this.x;
@@ -33,8 +37,10 @@ module objects {
             this.target.x = stage.mouseX;
             this.target.y = stage.mouseY;
             this._calculateTargetAngle();
+            this._checkFiringArc();
             this.checkBounds();
             this.shield.update();
+            
         }
 
         // Remove Player Object
@@ -53,6 +59,7 @@ module objects {
             this.dx = 0;
             this.dy = 0;
             this.target = new createjs.Point();
+            this.photonFired = false;
         }
 
         // Calculate the angle to the target
@@ -64,6 +71,19 @@ module objects {
             var radians = Math.atan2(this.dy, this.dx);
             this.targetAngle = radians * 180 / Math.PI;
             this.targetAngle += 180;
+        }
+
+        // Check if the target is within the front firing arc
+        private _checkFiringArc() {
+            if (this.targetAngle > this.direction) {
+                this._firingAngle = this.targetAngle - this.direction;
+            }
+            if (this.targetAngle < this.direction) {
+                this._firingAngle = this.direction - this.targetAngle;
+            }
+            if (this.targetAngle == this.direction) {
+                this._firingAngle = 0;
+            }
         }
 
         // Bind key actions to player events
@@ -151,6 +171,16 @@ module objects {
                 this.speed = 0;
             }
 
+        }
+
+        // Check if photon torpedo was fired
+        private _checkPhoton() {
+            if ((hud.photonNumber > 0) && (controls.PHOTON) && (this._firingAngle <= 30)) {
+                this.photonFired = true;
+            }
+            else {
+                this.photonFired = false;
+            }
         }
 
     }

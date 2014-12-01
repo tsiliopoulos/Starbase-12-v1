@@ -23,8 +23,8 @@
     config.SHOW_FPS = true;
 
     // Position Constants
-    config.TOP_LEFT = 0;
-    config.TOP_RIGHT = 1;
+    config.TOP_RIGHT = 0;
+    config.TOP_LEFT = 1;
     config.BOT_LEFT = 2;
     config.BOT_RIGHT = 3;
 
@@ -39,8 +39,14 @@
 
     // Game Play Constants
     config.PHASER_LEVEL = 100;
+    config.PHOTON_NUM = 8;
     config.INTEGRITY = 100;
     config.ARC_COUNT = 4;
-    config.ENEMY_COUNT = 3;
+    config.ENEMY_COUNT = 1;
+
+    // Colour Constants
+    config.GREEN = "#0F0";
+    config.YELLOW = "#FF0";
+    config.RED = "#F00";
 })(config || (config = {}));
 //# sourceMappingURL=config.js.map

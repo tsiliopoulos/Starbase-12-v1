@@ -5,8 +5,10 @@ module managers {
         public phasers: objects.Phaser[] = [];
         public tracers: objects.PhaserTracer[] = [];
         public disruptors: objects.Disruptor[] = [];
+        public photons: objects.Photon[] = [];
         public phaserSound: createjs.SoundInstance;
         public disruptorSound: createjs.SoundInstance;
+        public photonSound: createjs.SoundInstance;
         public randomShot: number[] = [];
         public starbaseAlive: boolean;
         public playerAlive: boolean;
@@ -14,6 +16,7 @@ module managers {
         // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         private _strafe: boolean = false;
         private _disruptorNum: number = 0;
+        private _photonNum: number = 0;
 
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
@@ -23,6 +26,7 @@ module managers {
 
             this.starbaseAlive = true;
             this.playerAlive = true;
+            
         }
 
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -42,7 +46,8 @@ module managers {
             this._checkDisruptorFire();
             this._updateDisruptor();
 
-            
+            this._checkPhotonFire();
+            this._updatePhoton();
         }
 
         // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -69,7 +74,7 @@ module managers {
 
         // Regenerate phaser energy over time
         private _regeneratePhaser() {
-            hud.phaserEnergy = hud.phaserEnergy + 0.25;
+            hud.phaserEnergy = hud.phaserEnergy + 0.33;
             if (hud.phaserEnergy > 100) {
                 hud.phaserEnergy = 100;
             }
@@ -144,6 +149,33 @@ module managers {
                 if (disruptor.speed == 0) {
                     this.disruptors.splice(Num, 1);
                     game.removeChild(disruptor);
+                }
+            }
+        }
+
+        // Check if photo has been fired
+        private _checkPhotonFire() {
+            if ((player.photonFired) && (this._photonNum % 60 == 0)) {
+                this.photonSound = createjs.Sound.play("photon");
+                var photon = new objects.Photon();
+                this.photons.push(photon);
+                game.addChild(photon);
+                hud.photonNumber--;
+                if (hud.photonNumber < 0) {
+                    hud.photonNumber = 0;
+                }
+            }
+            this._photonNum++;
+        }
+
+        // Update Photon
+        private _updatePhoton() {
+            for (var Num = 0; Num < this.photons.length; Num++) {
+                var photon = this.photons[Num];
+                photon.update();
+                if (photon.speed == 0) {
+                    this.photons.splice(Num, 1);
+                    game.removeChild(photon);
                 }
             }
         }

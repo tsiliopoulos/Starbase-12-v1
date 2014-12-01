@@ -25,8 +25,8 @@
 
         // create enemy
         public spawn() {
-            this.x = Math.floor(Math.random() * (config.WIDTH - 62) + 31);
-            this.y = Math.floor(Math.random() * (config.HEIGHT - 62) + 31);
+            this.x = Math.floor(Math.random() * (config.WIDTH - 62) + config.BORDER);
+            this.y = Math.floor(Math.random() * (config.HEIGHT - 62) + config.BORDER);
             this.location.x = this.x;
             this.location.y = this.y;
             this.shieldsDown();
@@ -55,7 +55,7 @@
 
         // Initialize player properties
         private _init() {
-            this.turnRate = 0.25;
+            this.turnRate = 0.5;
             this.speed = 0;
             this.direction = 90;
             this._firingAngle = this.direction;
@@ -106,22 +106,46 @@
         private _turnToFaceTarget() {
             this._calculateTargetAngle();
 
-            // Perform Right Turn;
-            if (this.targetAngle > this.direction) {
-                this.turnLeft();
-                this._firingAngle = this.targetAngle - this.direction;
-            }
+            var targetQuadrant = utility.Quadrant(this.targetAngle);
+            var enemyQuadrant = utility.Quadrant(this.direction);
 
-            // Perform Left Turn
-            if (this.targetAngle < this.direction) {
-                this.turnRight();
-                this._firingAngle = this.direction - this.targetAngle;
-            }
+            if ((targetQuadrant == enemyQuadrant) || (enemyQuadrant == config.TOP_LEFT) || (enemyQuadrant == config.BOT_LEFT)) {
+                if (this.direction > this.targetAngle) {
+                    this.turnRight();
+                    this._firingAngle = this.direction - this.targetAngle;
+                }
+                if (this.direction < this.targetAngle) {
+                    this.turnLeft();
+                    this._firingAngle = this.targetAngle - this.direction;
+                }
+                if (this.direction == this.targetAngle) {
+                    this._firingAngle = 0;
+                }
 
-            if (this.targetAngle == this.direction) {
-                this._firingAngle = 0;
-            }
+            } else {
 
+                if (enemyQuadrant == config.TOP_RIGHT) {
+                    if (targetQuadrant == config.BOT_RIGHT) {
+                        this.turnRight();
+                        this._firingAngle = this.direction - (360 - this.targetAngle);
+                    }
+                    else {
+                        this.turnLeft();
+                        this._firingAngle = this.targetAngle - this.direction
+                    }
+                }
+
+                if (enemyQuadrant == config.BOT_RIGHT) {
+                    if (targetQuadrant == config.TOP_RIGHT) {
+                        this.turnLeft();
+                        this._firingAngle = (this.targetAngle + 360) - this.direction;
+                    }
+                    else {
+                        this.turnRight();
+                        this._firingAngle = this.direction - this.targetAngle;
+                    }
+                }
+            }
         }
 
         // If firing angle is less than 30 degrees then fire disruptors

@@ -1,6 +1,5 @@
-﻿// Phaser Tracer Class
-module objects {
-    export class PhaserTracer extends objects.GameObject implements interfaces.IObject {
+﻿module objects {
+    export class Photon extends objects.GameObject implements interfaces.IObject {
         // PUBLIC PROPERTIES
         public range: number;
 
@@ -8,18 +7,17 @@ module objects {
         private _travelled: number;
         private _origin: createjs.Point;
         private _target: createjs.Point;
-       
+        
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
-            super("tracer");
-            this.name = "tracer";
+            super("torpedo");
+            this.name = "photon";
             this._origin = new createjs.Point();
             this._target = new createjs.Point();
             this._init();
         }
-
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        // Tracer update
+        // Photon update
         update() {
             this.calcVector();
             this.calcPosition();
@@ -27,12 +25,9 @@ module objects {
             this.location.y = this.y;
             this.checkBounds();
             this._travelled = utility.distance(this._origin, this.location);
-            if (this._travelled >= this.range) {
-                this.speed = 0;
-            }
         }
 
-        // Remove the tracer
+        // Remove the photon
         destroy() {
             game.removeChild(this);
         }
@@ -48,14 +43,11 @@ module objects {
             this.dx = 0;
             this.dy = 0;
             this.direction = player.targetAngle;
-            this.speed = 20;
+            this.speed = 10;
             this._target.x = stage.mouseX;
             this._target.y = stage.mouseY;
 
             this.range = utility.distance(this._origin, this._target);
-            
-            this.alpha = 0;
         }
-
-    } 
+    }
 } 

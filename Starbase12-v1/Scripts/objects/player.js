@@ -25,6 +25,7 @@ var objects;
         // Update player position and condition on screen
         Player.prototype.update = function () {
             this._controlAction();
+            this._checkPhoton();
             this.calcVector();
             this.calcPosition();
             this.location.x = this.x;
@@ -33,6 +34,7 @@ var objects;
             this.target.x = stage.mouseX;
             this.target.y = stage.mouseY;
             this._calculateTargetAngle();
+            this._checkFiringArc();
             this.checkBounds();
             this.shield.update();
         };
@@ -52,6 +54,7 @@ var objects;
             this.dx = 0;
             this.dy = 0;
             this.target = new createjs.Point();
+            this.photonFired = false;
         };
 
         // Calculate the angle to the target
@@ -63,6 +66,19 @@ var objects;
             var radians = Math.atan2(this.dy, this.dx);
             this.targetAngle = radians * 180 / Math.PI;
             this.targetAngle += 180;
+        };
+
+        // Check if the target is within the front firing arc
+        Player.prototype._checkFiringArc = function () {
+            if (this.targetAngle > this.direction) {
+                this._firingAngle = this.targetAngle - this.direction;
+            }
+            if (this.targetAngle < this.direction) {
+                this._firingAngle = this.direction - this.targetAngle;
+            }
+            if (this.targetAngle == this.direction) {
+                this._firingAngle = 0;
+            }
         };
 
         // Bind key actions to player events
@@ -146,6 +162,15 @@ var objects;
             // Forward Stop
             if ((controls.FORWARD == false) && (controls.REVERSE == false)) {
                 this.speed = 0;
+            }
+        };
+
+        // Check if photon torpedo was fired
+        Player.prototype._checkPhoton = function () {
+            if ((hud.photonNumber > 0) && (controls.PHOTON) && (this._firingAngle <= 30)) {
+                this.photonFired = true;
+            } else {
+                this.photonFired = false;
             }
         };
         return Player;

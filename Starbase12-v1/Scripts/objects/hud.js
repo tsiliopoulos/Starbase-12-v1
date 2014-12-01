@@ -20,33 +20,50 @@ var objects;
         // PUBLIC METHODS
         Hud.prototype.update = function () {
             this._phaserEnergyValue.text = Math.floor(this.phaserEnergy).toString();
+            this._phaserEnergyValue.color = utility.textColour(this.phaserEnergy);
             this._hullIntegrityValue.text = Math.floor(this.hullIntegrity).toString();
+            this._hullIntegrityValue.color = utility.textColour(this.hullIntegrity);
+            this._photonValue.text = Math.floor(this.photonNumber).toString();
+            if (this.photonNumber < 1) {
+                this._photonValue.color = config.RED;
+            } else {
+                this._photonValue.color = config.GREEN;
+            }
         };
 
         // PRIVATE METHODS
         // Initialize values
         Hud.prototype._init = function () {
-            this.phaserEnergy = 100;
-            this.hullIntegrity = 100;
+            this.phaserEnergy = config.PHASER_LEVEL;
+            this.hullIntegrity = config.INTEGRITY;
+            this.photonNumber = config.PHOTON_NUM;
         };
 
         // Draw labels onto the HUD
         Hud.prototype._drawStatLabels = function () {
-            this._phaserEnergyLabel = new createjs.Text("PHASER ENERGY", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
+            this._phaserEnergyLabel = new createjs.Text("PHASERS", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
             this._phaserEnergyLabel.x = 40;
             this.addChild(this._phaserEnergyLabel);
 
-            this._phaserEnergyValue = new createjs.Text(this.phaserEnergy.toString(), config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
-            this._phaserEnergyValue.x = 170;
+            this._phaserEnergyValue = new createjs.Text(this.phaserEnergy.toString(), config.FONT_SIZE + " " + config.FONT, config.GREEN);
+            this._phaserEnergyValue.x = 120;
             this.addChild(this._phaserEnergyValue);
 
-            this._hullIntegrityLabel = new createjs.Text("HULL INTEGRITY", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
-            this._hullIntegrityLabel.x = 230;
+            this._hullIntegrityLabel = new createjs.Text("HULL", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
+            this._hullIntegrityLabel.x = 180;
             this.addChild(this._hullIntegrityLabel);
 
-            this._hullIntegrityValue = new createjs.Text(this.hullIntegrity.toString(), config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
-            this._hullIntegrityValue.x = 360;
+            this._hullIntegrityValue = new createjs.Text(this.hullIntegrity.toString(), config.FONT_SIZE + " " + config.FONT, config.GREEN);
+            this._hullIntegrityValue.x = 230;
             this.addChild(this._hullIntegrityValue);
+
+            this._photonLabel = new createjs.Text("PHOTONS", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
+            this._photonLabel.x = 290;
+            this.addChild(this._photonLabel);
+
+            this._photonValue = new createjs.Text(this.photonNumber.toString(), config.FONT_SIZE + " " + config.FONT, config.GREEN);
+            this._photonValue.x = 370;
+            this.addChild(this._photonValue);
         };
 
         // Draw HUD Borders (Yellow)

@@ -22,8 +22,8 @@
     export var SHOW_FPS: boolean = true;
 
     // Position Constants
-    export var TOP_LEFT: number = 0;
-    export var TOP_RIGHT: number = 1;
+    export var TOP_RIGHT: number = 0;
+    export var TOP_LEFT: number = 1;
     export var BOT_LEFT: number = 2;
     export var BOT_RIGHT: number = 3;
 
@@ -38,10 +38,13 @@
 
     // Game Play Constants
     export var PHASER_LEVEL: number = 100;
+    export var PHOTON_NUM: number = 8;
     export var INTEGRITY: number = 100;
     export var ARC_COUNT: number = 4;
-    export var ENEMY_COUNT: number = 3;
+    export var ENEMY_COUNT: number = 1;
 
-
-
+    // Colour Constants
+    export var GREEN: string = "#0F0";
+    export var YELLOW: string = "#FF0";
+    export var RED: string = "#F00";
 }

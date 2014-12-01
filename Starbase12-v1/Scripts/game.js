@@ -7,6 +7,8 @@
 /// <reference path="utility/drawdebugrect.ts" />
 /// <reference path="utility/distance.ts" />
 /// <reference path="utility/getarcstring.ts" />
+/// <reference path="utility/textcolour.ts" />
+/// <reference path="utility/quadrant.ts" />
 /// <reference path="interfaces/iobject.ts" />
 /// <reference path="objects/gameobject.ts" />
 /// <reference path="objects/hud.ts" />
@@ -20,6 +22,7 @@
 /// <reference path="objects/starbase.ts" />
 /// <reference path="objects/phasertracer.ts" />
 /// <reference path="objects/phaser.ts" />
+/// <reference path="objects/photon.ts" />
 /// <reference path="managers/beamweapon.ts" />
 /// <reference path="managers/collision.ts" />
 var stage;
@@ -59,6 +62,7 @@ function init() {
     stage = new createjs.Stage(canvas);
     stage.enableMouseOver(20);
 
+    createjs.Ticker.timingMode = createjs.Ticker.RAF;
     createjs.Ticker.setFPS(config.FPS);
     createjs.Ticker.addEventListener("tick", gameLoop);
 

@@ -3,10 +3,10 @@
         var finalString: string = entityName;
         switch (arcNum) {
             case 0:
-                finalString += "TL";
+                finalString += "TR";
                 break;
             case 1:
-                finalString += "TR";
+                finalString += "TL";
                 break;
             case 2:
                 finalString += "BL";
