@@ -12,10 +12,10 @@ var objects;
         function Enemy() {
             _super.call(this, "klingon");
             this.name = "klingon";
+            this.showHealth();
             this.shieldsUp();
             this.spawn();
             this._init();
-            this._showHealth();
             this._selectTarget();
         }
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -34,10 +34,8 @@ var objects;
             this._turnToFaceTarget();
             this._fireDisruptor();
             this.calcHitArea();
+            this.healthUpdate();
             this.shield.update();
-            this.integrityLabel.x = this.x;
-            this.integrityLabel.y = this.y;
-            this.integrityLabel.text = Math.floor(this.integrity).toString();
             this._checkTargetAlive();
         };
 
@@ -50,7 +48,7 @@ var objects;
         // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++++
         // Initialize player properties
         Enemy.prototype._init = function () {
-            this.turnRate = 0.5;
+            this.turnRate = config.KLINGON_TURN_RATE;
             this.speed = 0;
             this.direction = 90;
             this._firingAngle = this.direction;
@@ -58,6 +56,7 @@ var objects;
             this.dx = 0;
             this.dy = 0;
             this.rateOfFire = Math.floor(Math.random() * 20 + 50);
+            this.damage = config.KLINGON_DAMAGE;
         };
 
         // Calculate the angle to the target
@@ -69,13 +68,6 @@ var objects;
             var radians = Math.atan2(this.dy, this.dx);
             this.targetAngle = radians * 180 / Math.PI;
             this.targetAngle += 180;
-        };
-
-        // Show Health of Enemy Ship
-        Enemy.prototype._showHealth = function () {
-            this.integrityLabel = new createjs.Text(this.integrity.toString(), config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
-            this.integrityLabel.regX = this.integrityLabel.getBounds().width * 0.5;
-            this.integrityLabel.regY = this.integrityLabel.getBounds().height * 0.5;
         };
 
         // Select a Random Target
@@ -93,9 +85,12 @@ var objects;
             if (!beamWeapon.starbaseAlive) {
                 this.target = player;
             }
+            if (!beamWeapon.playerAlive) {
+                this.target = starbase;
+            }
         };
 
-        // Turn to face the current target at the turn rate
+        // Turn to face the current target at the turn rate and fire
         Enemy.prototype._turnToFaceTarget = function () {
             this._calculateTargetAngle();
 

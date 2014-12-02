@@ -38,6 +38,7 @@ var objects;
 
         // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         PhaserTracer.prototype._init = function () {
+            // Set the Phaser origin
             this.x = player.x;
             this.y = player.y;
             this._origin.x = this.x;
@@ -46,12 +47,14 @@ var objects;
             this.dx = 0;
             this.dy = 0;
             this.direction = player.targetAngle;
-            this.speed = 20;
+            this.speed = config.PHASER_SPEED;
             this._target.x = stage.mouseX;
             this._target.y = stage.mouseY;
 
             this.range = utility.distance(this._origin, this._target);
+            this.damage = config.PHASER_DAMAGE;
 
+            // Render the Tracer Invisible
             this.alpha = 0;
         };
         return PhaserTracer;

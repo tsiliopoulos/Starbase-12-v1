@@ -20,6 +20,7 @@ module objects {
             this.name = "ship";
             this._init();
             this._assignControls();
+            this.showHealth();
             this.shieldsUp();
         }
 
@@ -39,8 +40,8 @@ module objects {
             this._calculateTargetAngle();
             this._checkFiringArc();
             this.checkBounds();
+            this.healthUpdate();
             this.shield.update();
-            
         }
 
         // Remove Player Object
@@ -53,13 +54,14 @@ module objects {
 
         // Initialize player properties
         private _init() {
-            this.turnRate = 1;
+            this.turnRate = config.PLAYER_TURN_RATE;
             this.speed = 0;
             this.direction = 90;
             this.dx = 0;
             this.dy = 0;
             this.target = new createjs.Point();
             this.photonFired = false;
+            this.damage = config.PLAYER_DAMAGE;
         }
 
         // Calculate the angle to the target
@@ -158,12 +160,12 @@ module objects {
 
             // Forward Movement
             if (controls.FORWARD) {
-                this.speed = 5;
+                this.speed = config.PLAYER_FORWARD;
             }
 
             // Reverse Movement
             if (controls.REVERSE) {
-                this.speed = -2;
+                this.speed = -config.PLAYER_REVERSE;
             }
 
             // Forward Stop

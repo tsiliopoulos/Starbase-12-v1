@@ -9,6 +9,7 @@
 /// <reference path="utility/getarcstring.ts" />
 /// <reference path="utility/textcolour.ts" />
 /// <reference path="utility/quadrant.ts" />
+/// <reference path="utility/oppositeangle.ts" />
 /// <reference path="interfaces/iobject.ts" />
 /// <reference path="objects/gameobject.ts" />
 /// <reference path="objects/hud.ts" />
@@ -38,6 +39,9 @@ var gameTiles: createjs.Point[] = [];
 var stats: Stats;
 var started: boolean = false;
 var count: number = 0;
+
+// Filters
+var colorFilter: createjs.ColorFilter = new createjs.ColorFilter(1, 1, 0);
 
 // Game Objects
 var player: objects.Player;
@@ -96,12 +100,18 @@ function gameLoop(event) {
     }
 
     starbase.update();
+    starbase.integrityLabel.updateCache();
+    starbase.updateCache();
 
     player.update();
+    player.integrityLabel.updateCache();
+    player.updateCache();
 
     // Update Enemies
     for (var count = 0; count < enemies.length; count++) {
         enemies[count].update();
+        enemies[count].integrityLabel.updateCache();
+        enemies[count].updateCache();
     }
 
     beamWeapon.update();
@@ -112,7 +122,7 @@ function gameLoop(event) {
 
 
 
-    //game.updateCache();
+    game.updateCache();
 
     hud.update();
 
@@ -158,12 +168,15 @@ function getLocationFromTile(entity: objects.GameObject) {
 }
 
 // Create new enemy ships
-function spawnEnemies() {
-
+function spawnEnemies() { 
     for (var count = 0; count < config.ENEMY_COUNT; count++) {
         enemies[count] = new objects.Enemy();
         game.addChild(enemies[count]);
         game.addChild(enemies[count].integrityLabel);
+        enemies[count].integrityLabel.shadow = new createjs.Shadow('#FFF', 2, 2, 8);
+        enemies[count].integrityLabel.filters = [colorFilter];
+        enemies[count].integrityLabel.cache(0, 0, enemies[count].integrityLabel.getBounds().width, enemies[count].integrityLabel.getBounds().height);
+        enemies[count].cache(0, 0, enemies[count].width, enemies[count].height);
         getLocationFromTile(enemies[count]);
     }
 }
@@ -188,13 +201,20 @@ function gameStart(): void {
     starbase = new objects.Starbase();
     game.addChild(starbase);
     game.addChild(starbase.integrityLabel);
-    //starbase.cache(0, 0, starbase.width, starbase.height);
+    starbase.integrityLabel.shadow = new createjs.Shadow('#FFF', 2, 2, 8);
+    starbase.integrityLabel.filters = [colorFilter];
+    starbase.integrityLabel.cache(0, 0, starbase.integrityLabel.getBounds().width, starbase.integrityLabel.getBounds().height);
+    starbase.cache(0, 0, starbase.width, starbase.height);
     getLocationFromTile(starbase);
 
     // Create player
     player = new objects.Player();
     game.addChild(player);
-    //player.cache(0, 0, player.width, player.height);
+    game.addChild(player.integrityLabel);
+    player.integrityLabel.shadow = new createjs.Shadow('#FFF', 2, 2, 8);
+    player.integrityLabel.filters = [colorFilter];
+    player.integrityLabel.cache(0, 0, player.integrityLabel.getBounds().width, player.integrityLabel.getBounds().height);
+    player.cache(0, 0, player.width, player.height);
     getLocationFromTile(player);
 
 
@@ -232,6 +252,6 @@ function gameStart(): void {
     game.addChild(myLabel);*/
     
     stage.addChild(game);
-    //game.cache(0, 0, config.WIDTH, config.HEIGHT);
+    game.cache(0, 0, config.WIDTH, config.HEIGHT);
 
 }

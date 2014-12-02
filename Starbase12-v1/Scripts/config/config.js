@@ -48,5 +48,27 @@
     config.GREEN = "#0F0";
     config.YELLOW = "#FF0";
     config.RED = "#F00";
+
+    // Damage Constants
+    config.PHOTON_DAMAGE = 50;
+    config.PHASER_DAMAGE = 5;
+    config.DISRUPTOR_DAMAGE = 10;
+    config.PLAYER_DAMAGE = 25;
+    config.KLINGON_DAMAGE = 20;
+    config.STARBASE_DAMAGE = 25;
+
+    // Speed Constants
+    config.KLINGON_FORWARD = 3;
+    config.KLINGON_REVERSE = 1;
+    config.PLAYER_FORWARD = 5;
+    config.PLAYER_REVERSE = 2;
+    config.PHASER_SPEED = 20;
+    config.PHOTON_SPEED = 10;
+    config.DISRUPTOR_SPEED = 10;
+
+    // Turn Rate Constants
+    config.KLINGON_TURN_RATE = 0.6;
+    config.STARBASE_TURN_RATE = 0.1;
+    config.PLAYER_TURN_RATE = 1;
 })(config || (config = {}));
 //# sourceMappingURL=config.js.map

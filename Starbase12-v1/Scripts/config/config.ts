@@ -47,4 +47,26 @@
     export var GREEN: string = "#0F0";
     export var YELLOW: string = "#FF0";
     export var RED: string = "#F00";
+
+    // Damage Constants
+    export var PHOTON_DAMAGE: number = 50;
+    export var PHASER_DAMAGE: number = 5;
+    export var DISRUPTOR_DAMAGE: number = 10;
+    export var PLAYER_DAMAGE: number = 25;
+    export var KLINGON_DAMAGE: number = 20;
+    export var STARBASE_DAMAGE: number = 25;
+
+    // Speed Constants
+    export var KLINGON_FORWARD: number = 3;
+    export var KLINGON_REVERSE: number = 1;
+    export var PLAYER_FORWARD: number = 5;
+    export var PLAYER_REVERSE: number = 2;
+    export var PHASER_SPEED: number = 20;
+    export var PHOTON_SPEED: number = 10;
+    export var DISRUPTOR_SPEED: number = 10;
+
+    // Turn Rate Constants
+    export var KLINGON_TURN_RATE: number = 0.6;
+    export var STARBASE_TURN_RATE: number = 0.1;
+    export var PLAYER_TURN_RATE: number = 1;
 }

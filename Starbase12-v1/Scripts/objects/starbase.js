@@ -15,7 +15,7 @@ var objects;
 
             this.name = "starbase";
             this.init();
-            this._showHealth();
+            this.showHealth();
             this.shieldsUp();
             this.randomRotation();
         }
@@ -31,10 +31,8 @@ var objects;
                     break;
             }
             this.calcHitArea();
+            this.healthUpdate();
             this.shield.update();
-            this.integrityLabel.x = this.x;
-            this.integrityLabel.y = this.y;
-            this.integrityLabel.text = Math.floor(this.integrity).toString();
         };
 
         // remove the starbase object from the game
@@ -46,18 +44,12 @@ var objects;
         // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++
         // Initialize starbase properties
         Starbase.prototype.init = function () {
-            this.turnRate = 0.1;
+            this.turnRate = config.STARBASE_TURN_RATE;
             this.speed = 0;
             this.direction = 90;
             this.dx = 0;
             this.dy = 0;
-        };
-
-        // Show Health of Starbase Ship
-        Starbase.prototype._showHealth = function () {
-            this.integrityLabel = new createjs.Text(this.integrity.toString(), config.FONT_SIZE + " " + config.FONT, "#000");
-            this.integrityLabel.regX = this.integrityLabel.getBounds().width * 0.5;
-            this.integrityLabel.regY = this.integrityLabel.getBounds().height * 0.5;
+            this.damage = config.STARBASE_DAMAGE;
         };
 
         // Rotate the Starbase in a random direction

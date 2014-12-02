@@ -1,8 +1,7 @@
 ﻿// Disruptor Bullet Class
 module objects {
-    export class Disruptor extends objects.GameObject implements interfaces.IObject {
-
-        // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    export class Disruptor extends objects.GameObject implements interfaces.IObject {   
+         // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         private _enemy: objects.Enemy;
         private _origin: createjs.Point;
         private _target: createjs.Point;
@@ -42,7 +41,8 @@ module objects {
             this.dx = 0;
             this.dy = 0;
             this.direction = this._enemy.targetAngle;
-            this.speed = 20;
+            this.speed = config.DISRUPTOR_SPEED;
+            this.damage = config.DISRUPTOR_DAMAGE;
         }
 
 

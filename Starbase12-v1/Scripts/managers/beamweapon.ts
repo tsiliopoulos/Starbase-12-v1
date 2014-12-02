@@ -26,7 +26,6 @@ module managers {
 
             this.starbaseAlive = true;
             this.playerAlive = true;
-            
         }
 
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

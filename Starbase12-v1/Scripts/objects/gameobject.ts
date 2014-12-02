@@ -15,6 +15,8 @@ module objects {
         public shield: objects.Shield;
         public hit: createjs.Shape;
         public integrity: number;
+        public damage: number;
+        public integrityLabel: objects.Label;
 
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         constructor(SpriteName: string) {
@@ -53,6 +55,22 @@ module objects {
             this.hitArea = this.hit;
         }
 
+        // Show Health of the game object
+        public showHealth() {
+            this.integrityLabel = new objects.Label(this.x, this.y, this.integrity.toString());
+            this.integrityLabel.fontSize(26);
+            this.integrityLabel.regX = this.integrityLabel.getBounds().width * 0.5;
+            this.integrityLabel.regY = this.integrityLabel.getBounds().height * 0.5;
+        }
+
+        // Update the health value
+        public healthUpdate() {
+            this.integrityLabel.x = this.x;
+            this.integrityLabel.y = this.y;
+            this.integrityLabel.text = Math.floor(this.integrity).toString();
+        }
+
+        // Raise the game object's shields 
         public shieldsUp() {
             this.shield = new objects.Shield(this);
             this.shield.regX = this.shield.width * 0.5;
@@ -62,6 +80,7 @@ module objects {
             game.addChild(this.shield);
         }
 
+        // Lower the game object's shields
         public shieldsDown() {
             game.removeChild(this.shield);
         }

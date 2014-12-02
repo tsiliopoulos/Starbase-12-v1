@@ -11,8 +11,6 @@ module objects {
         private _rightBorder: createjs.Bitmap;
         private _phaserEnergyLabel: createjs.Text;
         private _phaserEnergyValue: createjs.Text;
-        private _hullIntegrityLabel: createjs.Text;
-        private _hullIntegrityValue: createjs.Text;
         private _photonLabel: createjs.Text;
         private _photonValue: createjs.Text;
 
@@ -29,8 +27,6 @@ module objects {
         update() {
             this._phaserEnergyValue.text = Math.floor(this.phaserEnergy).toString();
             this._phaserEnergyValue.color = utility.textColour(this.phaserEnergy);
-            this._hullIntegrityValue.text = Math.floor(this.hullIntegrity).toString();
-            this._hullIntegrityValue.color = utility.textColour(this.hullIntegrity);
             this._photonValue.text = Math.floor(this.photonNumber).toString();
             if (this.photonNumber < 1) {
                 this._photonValue.color = config.RED;
@@ -60,20 +56,12 @@ module objects {
             this._phaserEnergyValue.x = 120;
             this.addChild(this._phaserEnergyValue);
 
-            this._hullIntegrityLabel = new createjs.Text("HULL", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
-            this._hullIntegrityLabel.x = 180;
-            this.addChild(this._hullIntegrityLabel);
-
-            this._hullIntegrityValue = new createjs.Text(this.hullIntegrity.toString(), config.FONT_SIZE + " " + config.FONT, config.GREEN);
-            this._hullIntegrityValue.x = 230;
-            this.addChild(this._hullIntegrityValue);
-
             this._photonLabel = new createjs.Text("PHOTONS", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
-            this._photonLabel.x = 290;
+            this._photonLabel.x = 180;
             this.addChild(this._photonLabel);
 
             this._photonValue = new createjs.Text(this.photonNumber.toString(), config.FONT_SIZE + " " + config.FONT, config.GREEN);
-            this._photonValue.x = 370;
+            this._photonValue.x = 260;
             this.addChild(this._photonValue);
         }
 

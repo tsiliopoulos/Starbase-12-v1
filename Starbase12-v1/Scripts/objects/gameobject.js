@@ -45,6 +45,22 @@ var objects;
             this.hitArea = this.hit;
         };
 
+        // Show Health of the game object
+        GameObject.prototype.showHealth = function () {
+            this.integrityLabel = new objects.Label(this.x, this.y, this.integrity.toString());
+            this.integrityLabel.fontSize(26);
+            this.integrityLabel.regX = this.integrityLabel.getBounds().width * 0.5;
+            this.integrityLabel.regY = this.integrityLabel.getBounds().height * 0.5;
+        };
+
+        // Update the health value
+        GameObject.prototype.healthUpdate = function () {
+            this.integrityLabel.x = this.x;
+            this.integrityLabel.y = this.y;
+            this.integrityLabel.text = Math.floor(this.integrity).toString();
+        };
+
+        // Raise the game object's shields
         GameObject.prototype.shieldsUp = function () {
             this.shield = new objects.Shield(this);
             this.shield.regX = this.shield.width * 0.5;
@@ -54,6 +70,7 @@ var objects;
             game.addChild(this.shield);
         };
 
+        // Lower the game object's shields
         GameObject.prototype.shieldsDown = function () {
             game.removeChild(this.shield);
         };

@@ -42,11 +42,12 @@ var objects;
             this.dx = 0;
             this.dy = 0;
             this.direction = player.targetAngle;
-            this.speed = 10;
+            this.speed = config.PHOTON_SPEED;
             this._target.x = stage.mouseX;
             this._target.y = stage.mouseY;
 
             this.range = utility.distance(this._origin, this._target);
+            this.damage = config.PHOTON_DAMAGE;
         };
         return Photon;
     })(objects.GameObject);

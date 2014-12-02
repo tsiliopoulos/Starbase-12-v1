@@ -212,6 +212,7 @@
     <TypeScriptCompile Include="Scripts\utility\distance.ts" />
     <TypeScriptCompile Include="Scripts\utility\drawdebugrect.ts" />
     <TypeScriptCompile Include="Scripts\utility\getarcstring.ts" />
+    <TypeScriptCompile Include="Scripts\utility\oppositeangle.ts" />
     <TypeScriptCompile Include="Scripts\utility\quadrant.ts" />
     <TypeScriptCompile Include="Scripts\utility\showLocation.ts" />
     <TypeScriptCompile Include="Scripts\utility\textcolour.ts" />
