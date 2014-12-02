@@ -13,7 +13,6 @@ var objects;
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++++++
         function Explosion(x, y) {
             this._particle = new createjs.Bitmap(managers.Assets.loader.getResult("particle"));
-            this.lifeTime = 0;
             _super.call(this, this._particle.image);
             this.position = new createjs.Point(x, y);
             this.emitterType = createjs.ParticleEmitterType.Emit;
@@ -48,12 +47,8 @@ var objects;
             this.startSizeVar = 33;
             this.endSize = 0;
             this.endSizeVar = 5;
+            this.duration = 1000;
         }
-        // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++
-        //Update Method
-        Explosion.prototype.update = function () {
-            this.lifeTime++;
-        };
         return Explosion;
     })(createjs.ParticleEmitter);
     objects.Explosion = Explosion;

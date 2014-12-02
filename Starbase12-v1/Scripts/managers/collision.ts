@@ -88,6 +88,9 @@ module managers {
                     }
                 }
                 if (defendObject.integrity < 1) {
+                    // Display Particle Explosion
+                    particleExplosion.addExplosion(defendObject.x, defendObject.y);
+
                     createjs.Sound.play("explosion");
                     defendObject.shieldsDown();
                     if (defendObject.name == "klingon") {

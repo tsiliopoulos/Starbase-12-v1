@@ -196,6 +196,7 @@
     <TypeScriptCompile Include="Scripts\libs\require.d.ts" />
     <TypeScriptCompile Include="Scripts\managers\collision.ts" />
     <TypeScriptCompile Include="Scripts\managers\beamweapon.ts" />
+    <TypeScriptCompile Include="Scripts\managers\particleexplosion.ts" />
     <TypeScriptCompile Include="Scripts\objects\disruptor.ts" />
     <TypeScriptCompile Include="Scripts\objects\enemy.ts" />
     <TypeScriptCompile Include="Scripts\objects\phaser.ts" />
@@ -209,6 +210,7 @@
     <TypeScriptCompile Include="Scripts\objects\player.ts" />
     <TypeScriptCompile Include="Scripts\objects\shield.ts" />
     <TypeScriptCompile Include="Scripts\objects\starbase.ts" />
+    <TypeScriptCompile Include="Scripts\libs\gamepad.d.ts" />
     <TypeScriptCompile Include="Scripts\utility\distance.ts" />
     <TypeScriptCompile Include="Scripts\utility\drawdebugrect.ts" />
     <TypeScriptCompile Include="Scripts\utility\getarcstring.ts" />

@@ -42,7 +42,7 @@
     config.PHOTON_NUM = 8;
     config.INTEGRITY = 100;
     config.ARC_COUNT = 4;
-    config.ENEMY_COUNT = 1;
+    config.ENEMY_COUNT = 3;
 
     // Colour Constants
     config.GREEN = "#0F0";

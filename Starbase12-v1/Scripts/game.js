@@ -24,24 +24,23 @@
 /// <reference path="objects/phasertracer.ts" />
 /// <reference path="objects/phaser.ts" />
 /// <reference path="objects/photon.ts" />
+/// <reference path="managers/particleexplosion.ts" />
 /// <reference path="managers/beamweapon.ts" />
 /// <reference path="managers/collision.ts" />
 var stage;
 var canvas;
 
-var emitter = [];
-var myBoom = [];
-
 var gameTiles = [];
 
 var stats;
-var started = false;
 var count = 0;
 
 // Filters
 var colorFilter = new createjs.ColorFilter(1, 1, 0);
 
 // Game Objects
+var emitters = [];
+var explosions = [];
 var player;
 var starbase;
 var enemies = [];
@@ -51,6 +50,7 @@ var hud;
 // Game Managers
 var beamWeapon;
 var collision;
+var particleExplosion;
 
 var crosshair;
 var game;
@@ -86,16 +86,6 @@ function gameLoop(event) {
     // Start counting for FPS stats
     this.stats.begin();
 
-    if (started) {
-        for (var i = 0; i < emitter.length; i++) {
-            emitter[i].update();
-            if (emitter[i].lifeTime >= 15) {
-                //destroyEmitter();
-                game.removeChild(myBoom[i]);
-            }
-        }
-    }
-
     starbase.update();
     starbase.integrityLabel.updateCache();
     starbase.updateCache();
@@ -111,6 +101,8 @@ function gameLoop(event) {
     }
 
     beamWeapon.update();
+
+    particleExplosion.update();
 
     collision.update();
 
@@ -219,9 +211,9 @@ function gameStart() {
     createjs.Sound.play("explosion");
     myBoom[count] = new createjs.Container();
     game.addChild(myBoom[count]);
-    emitter[count] = new objects.Explosion(stage.mouseX, stage.mouseY);
+    explosions[count] = new objects.Explosion(stage.mouseX, stage.mouseY);
     
-    myBoom[count].addChild(emitter[count]);
+    myBoom[count].addChild(explosions[count]);
     count++;
     });*/
     // Create the Crosshair
@@ -231,6 +223,9 @@ function gameStart() {
 
     // Instantiate the Beamweapon Manager
     beamWeapon = new managers.BeamWeapon();
+
+    // Manage Explosions
+    particleExplosion = new managers.ParticleExplosion();
 
     // Manage Collisions
     collision = new managers.Collision();

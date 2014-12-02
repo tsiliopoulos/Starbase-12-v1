@@ -24,6 +24,7 @@
 /// <reference path="objects/phasertracer.ts" />
 /// <reference path="objects/phaser.ts" />
 /// <reference path="objects/photon.ts" />
+/// <reference path="managers/particleexplosion.ts" />
 /// <reference path="managers/beamweapon.ts" />
 /// <reference path="managers/collision.ts" />
 
@@ -31,19 +32,17 @@
 var stage: createjs.Stage;
 var canvas;
 
-var emitter: objects.Explosion[] = [];
-var myBoom: createjs.Container[] = [];  
-
 var gameTiles: createjs.Point[] = [];
 
 var stats: Stats;
-var started: boolean = false;
 var count: number = 0;
 
 // Filters
 var colorFilter: createjs.ColorFilter = new createjs.ColorFilter(1, 1, 0);
 
 // Game Objects
+var emitters: createjs.Container[] = [];
+var explosions: objects.Explosion[] = [];
 var player: objects.Player;
 var starbase: objects.Starbase;
 var enemies: objects.Enemy[] = [];
@@ -53,6 +52,7 @@ var hud: objects.Hud;
 // Game Managers
 var beamWeapon: managers.BeamWeapon;
 var collision: managers.Collision;
+var particleExplosion: managers.ParticleExplosion;
 
 var crosshair: objects.Crosshair;
 var game: createjs.Container;
@@ -89,16 +89,6 @@ function gameLoop(event) {
     // Start counting for FPS stats
     this.stats.begin();
 
-    if (started) {
-        for (var i = 0; i < emitter.length; i++) {
-            emitter[i].update();
-            if (emitter[i].lifeTime >= 15) {
-                //destroyEmitter();
-                game.removeChild(myBoom[i]);
-            }
-        }
-    }
-
     starbase.update();
     starbase.integrityLabel.updateCache();
     starbase.updateCache();
@@ -116,11 +106,11 @@ function gameLoop(event) {
 
     beamWeapon.update();
 
+    particleExplosion.update();
+
     collision.update();
 
     crosshair.update();
-
-
 
     game.updateCache();
 
@@ -217,9 +207,6 @@ function gameStart(): void {
     player.cache(0, 0, player.width, player.height);
     getLocationFromTile(player);
 
-
-
-
     // Create enemies
     this.spawnEnemies();
 
@@ -230,9 +217,9 @@ function gameStart(): void {
         createjs.Sound.play("explosion");
         myBoom[count] = new createjs.Container();
         game.addChild(myBoom[count]);
-        emitter[count] = new objects.Explosion(stage.mouseX, stage.mouseY);
+        explosions[count] = new objects.Explosion(stage.mouseX, stage.mouseY);
         
-        myBoom[count].addChild(emitter[count]);
+        myBoom[count].addChild(explosions[count]);
         count++;
     });*/
 
@@ -244,6 +231,9 @@ function gameStart(): void {
 
     // Instantiate the Beamweapon Manager
     beamWeapon = new managers.BeamWeapon();
+
+    // Manage Explosions
+    particleExplosion = new managers.ParticleExplosion();
 
     // Manage Collisions
     collision = new managers.Collision();
