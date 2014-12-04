@@ -31,7 +31,8 @@ var objects;
             this.calcPosition();
             this.location.x = this.x;
             this.location.y = this.y;
-            this.calcHitArea();
+
+            //this.calcHitArea(); // debug info
             this.target.x = stage.mouseX;
             this.target.y = stage.mouseY;
             this._calculateTargetAngle();

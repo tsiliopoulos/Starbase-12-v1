@@ -33,7 +33,8 @@ var objects;
         Enemy.prototype.update = function () {
             this._turnToFaceTarget();
             this._fireDisruptor();
-            this.calcHitArea();
+
+            //this.calcHitArea(); // debug hit area
             this.healthUpdate();
             this.shield.update();
             this._checkTargetAlive();

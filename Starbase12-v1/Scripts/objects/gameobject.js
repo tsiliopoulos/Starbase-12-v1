@@ -19,8 +19,6 @@ var objects;
             this.regY = this.height * 0.5;
             this.location = new createjs.Point();
             this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
-            this.hit = new createjs.Shape();
-            this.hit.graphics.beginFill("#FFF").drawCircle(this.x, this.y, this.radius);
             this.integrity = 100;
         }
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -38,7 +36,7 @@ var objects;
             this.y += this.dy;
         };
 
-        // Calculate the game object's hit area
+        // Utility method to help calculate the game object's hit area
         GameObject.prototype.calcHitArea = function () {
             this.hit.x = this.x;
             this.hit.y = this.y;

@@ -27,7 +27,7 @@ module objects {
                     this.turnLeft();
                     break;
             }
-            this.calcHitArea();
+            //this.calcHitArea(); // debug info
             this.healthUpdate();
             this.shield.update();
         }

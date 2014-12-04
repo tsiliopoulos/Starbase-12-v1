@@ -178,6 +178,7 @@ module managers {
                     this._checkPhaserAndEnemy();
                 }
             }
+            
 
             // Check Photon Collisions
             if (beamWeapon.photons.length > 0) {
@@ -187,7 +188,7 @@ module managers {
                     this._checkPhotonAndEnemy();
                 }
             }
-
+            
             // Check Disruptor Collisions
             if (beamWeapon.disruptors.length > 0) {
                 this._currentDisruptor = beamWeapon.disruptors[beamWeapon.disruptors.length - 1];
@@ -200,6 +201,7 @@ module managers {
                     this._checkDisruptorAndPlayer();
                 }
             }
+            
         }
 
     }

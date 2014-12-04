@@ -18,6 +18,7 @@
             this.spawn();
             this._init();
             this._selectTarget();
+
         }
 
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -36,7 +37,7 @@
         public update() {
             this._turnToFaceTarget();
             this._fireDisruptor();
-            this.calcHitArea();
+            //this.calcHitArea(); // debug hit area
             this.healthUpdate();
             this.shield.update();
             this._checkTargetAlive();

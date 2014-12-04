@@ -27,8 +27,6 @@ module objects {
             this.regY = this.height * 0.5;
             this.location = new createjs.Point();
             this.radius = Math.sqrt(Math.pow(this.width, 2) + Math.pow(this.height, 2)) * 0.5;
-            this.hit = new createjs.Shape();
-            this.hit.graphics.beginFill("#FFF").drawCircle(this.x, this.y, this.radius);
             this.integrity = 100;
         }
 
@@ -48,7 +46,7 @@ module objects {
             this.y += this.dy;
         }
 
-        // Calculate the game object's hit area
+        // Utility method to help calculate the game object's hit area
         public calcHitArea() {
             this.hit.x = this.x;
             this.hit.y = this.y;
@@ -69,6 +67,7 @@ module objects {
             this.integrityLabel.y = this.y;
             this.integrityLabel.text = Math.floor(this.integrity).toString();
         }
+        
 
         // Raise the game object's shields 
         public shieldsUp() {

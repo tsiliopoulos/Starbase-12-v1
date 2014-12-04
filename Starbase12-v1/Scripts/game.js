@@ -33,8 +33,8 @@ var canvas;
 var gameTiles = [];
 
 var stats;
-var count = 0;
 
+//var count: number = 0;
 // Filters
 var colorFilter = new createjs.ColorFilter(1, 1, 0);
 
@@ -64,22 +64,12 @@ function init() {
     canvas = config.ARCADE_CANVAS;
 
     stage = new createjs.Stage(canvas);
-    stage.enableMouseOver(20);
 
-    createjs.Ticker.timingMode = createjs.Ticker.RAF;
+    //stage.enableMouseOver(20);
     createjs.Ticker.setFPS(config.FPS);
     createjs.Ticker.addEventListener("tick", gameLoop);
 
     gameStart();
-}
-
-// Toggle mouse events when mouse enters / leaves stage
-function checkMouse() {
-    if ((stage.mouseX > config.WIDTH - 31) || (stage.mouseX < 31) || (stage.mouseY > config.HEIGHT - 31) || (stage.mouseY < 31)) {
-        game.mouseEnabled = false;
-    } else {
-        game.mouseEnabled = true;
-    }
 }
 
 function gameLoop(event) {
@@ -107,8 +97,7 @@ function gameLoop(event) {
     collision.update();
 
     crosshair.update();
-
-    game.updateCache();
+    crosshair.updateCache();
 
     hud.update();
 
@@ -161,6 +150,7 @@ function spawnEnemies() {
         game.addChild(enemies[count].integrityLabel);
         enemies[count].integrityLabel.shadow = new createjs.Shadow('#FFF', 2, 2, 8);
         enemies[count].integrityLabel.filters = [colorFilter];
+
         enemies[count].integrityLabel.cache(0, 0, enemies[count].integrityLabel.getBounds().width, enemies[count].integrityLabel.getBounds().height);
         enemies[count].cache(0, 0, enemies[count].width, enemies[count].height);
         getLocationFromTile(enemies[count]);
@@ -188,6 +178,7 @@ function gameStart() {
     game.addChild(starbase.integrityLabel);
     starbase.integrityLabel.shadow = new createjs.Shadow('#FFF', 2, 2, 8);
     starbase.integrityLabel.filters = [colorFilter];
+
     starbase.integrityLabel.cache(0, 0, starbase.integrityLabel.getBounds().width, starbase.integrityLabel.getBounds().height);
     starbase.cache(0, 0, starbase.width, starbase.height);
     getLocationFromTile(starbase);
@@ -198,6 +189,7 @@ function gameStart() {
     game.addChild(player.integrityLabel);
     player.integrityLabel.shadow = new createjs.Shadow('#FFF', 2, 2, 8);
     player.integrityLabel.filters = [colorFilter];
+
     player.integrityLabel.cache(0, 0, player.integrityLabel.getBounds().width, player.integrityLabel.getBounds().height);
     player.cache(0, 0, player.width, player.height);
     getLocationFromTile(player);
@@ -205,17 +197,6 @@ function gameStart() {
     // Create enemies
     this.spawnEnemies();
 
-    /* game.addEventListener("click", function () {
-    started = true;
-    
-    createjs.Sound.play("explosion");
-    myBoom[count] = new createjs.Container();
-    game.addChild(myBoom[count]);
-    explosions[count] = new objects.Explosion(stage.mouseX, stage.mouseY);
-    
-    myBoom[count].addChild(explosions[count]);
-    count++;
-    });*/
     // Create the Crosshair
     crosshair = new objects.Crosshair();
     game.addChild(crosshair);
@@ -230,9 +211,6 @@ function gameStart() {
     // Manage Collisions
     collision = new managers.Collision();
 
-    /*var myLabel = new objects.Label(config.MIDDLE_X, config.MIDDLE_Y, "Starbase 12");
-    game.addChild(myLabel);*/
     stage.addChild(game);
-    game.cache(0, 0, config.WIDTH, config.HEIGHT);
 }
 //# sourceMappingURL=game.js.map
