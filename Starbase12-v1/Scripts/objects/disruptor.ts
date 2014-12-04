@@ -40,6 +40,7 @@ module objects {
             this._origin.y = this._enemy.y;
             this.dx = 0;
             this.dy = 0;
+            this.radius *= 1.5;
             this.direction = this._enemy.targetAngle;
             this.speed = config.DISRUPTOR_SPEED;
             this.damage = config.DISRUPTOR_DAMAGE;

@@ -196,6 +196,7 @@
     <TypeScriptCompile Include="Scripts\libs\require.d.ts" />
     <TypeScriptCompile Include="Scripts\managers\collision.ts" />
     <TypeScriptCompile Include="Scripts\managers\beamweapon.ts" />
+    <TypeScriptCompile Include="Scripts\managers\klingon.ts" />
     <TypeScriptCompile Include="Scripts\managers\particleexplosion.ts" />
     <TypeScriptCompile Include="Scripts\objects\disruptor.ts" />
     <TypeScriptCompile Include="Scripts\objects\enemy.ts" />

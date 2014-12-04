@@ -24,44 +24,47 @@
 /// <reference path="objects/phasertracer.ts" />
 /// <reference path="objects/phaser.ts" />
 /// <reference path="objects/photon.ts" />
+/// <reference path="managers/klingon.ts" />
 /// <reference path="managers/particleexplosion.ts" />
 /// <reference path="managers/beamweapon.ts" />
 /// <reference path="managers/collision.ts" />
 
-
 var stage: createjs.Stage;
 var canvas;
-
-var gameTiles: createjs.Point[] = [];
-
 var stats: Stats;
-//var count: number = 0;
 
 // Filters
 var colorFilter: createjs.ColorFilter = new createjs.ColorFilter(1, 1, 0);
 
 // Game Objects
-var emitters: createjs.Container[] = [];
-var explosions: objects.Explosion[] = [];
 var player: objects.Player;
 var starbase: objects.Starbase;
-var enemies: objects.Enemy[] = [];
 var background: createjs.Bitmap;
 var hud: objects.Hud;
+var crosshair: objects.Crosshair;
+
+// Game Arrays
+var emitters: createjs.Container[] = [];
+var explosions: objects.Explosion[] = [];
+var gameTiles: createjs.Point[] = [];
+var enemies: objects.Enemy[] = [];
 
 // Game Managers
 var beamWeapon: managers.BeamWeapon;
 var collision: managers.Collision;
 var particleExplosion: managers.ParticleExplosion;
+var klingon: managers.Klingon;
 
-var crosshair: objects.Crosshair;
+// Game Container
 var game: createjs.Container;
 
+// Preload Assets
 function preload(): void {
     managers.Assets.init();
     managers.Assets.loader.addEventListener("complete", init);
 }
 
+// Initialize Game
 function init(): void {
     canvas = config.ARCADE_CANVAS;
     
@@ -74,38 +77,37 @@ function init(): void {
     gameStart();
 }
 
+// Main Game Loop
 function gameLoop(event) {
     // Start counting for FPS stats
     this.stats.begin();
 
+    // Update Starbase
     starbase.update();
     starbase.integrityLabel.updateCache();
     starbase.updateCache();
 
+    // Update Player
     player.update();
     player.integrityLabel.updateCache();
     player.updateCache();
 
-    // Update Enemies
-    for (var count = 0; count < enemies.length; count++) {
-        enemies[count].update();
-        enemies[count].integrityLabel.updateCache();
-        enemies[count].updateCache();
-    }
-
+    // Update Managers
+    klingon.update();
     beamWeapon.update();
-
     particleExplosion.update();
-
     collision.update();
 
+    // Update Crosshair
     crosshair.update();
     crosshair.updateCache();
 
+    // Update HUD
     hud.update();
 
     stage.update(event);
 
+    // Stop counting Stats
     return this.stats.end();
 }
 
@@ -145,21 +147,7 @@ function getLocationFromTile(entity: objects.GameObject) {
     entity.shield.y = entity.y;
 }
 
-// Create new enemy ships
-function spawnEnemies() { 
-    for (var count = 0; count < config.ENEMY_COUNT; count++) {
-        enemies[count] = new objects.Enemy();
-        game.addChild(enemies[count]);
-        game.addChild(enemies[count].integrityLabel);
-        enemies[count].integrityLabel.shadow = new createjs.Shadow('#FFF', 2, 2, 8);
-        enemies[count].integrityLabel.filters = [colorFilter];
-        
-        enemies[count].integrityLabel.cache(0, 0, enemies[count].integrityLabel.getBounds().width, enemies[count].integrityLabel.getBounds().height);
-        enemies[count].cache(0, 0, enemies[count].width, enemies[count].height);
-        getLocationFromTile(enemies[count]);
-    }
-}
-
+// Main Game Function
 function gameStart(): void {
     setupStats();
     setupGameTiles();
@@ -198,8 +186,10 @@ function gameStart(): void {
     player.cache(0, 0, player.width, player.height);
     getLocationFromTile(player);
 
-    // Create enemies
-    this.spawnEnemies();
+
+    // Instantiate Enemy Manager and Create enemies
+    klingon = new managers.Klingon();
+    klingon.spawn();
     
     // Create the Crosshair
     crosshair = new objects.Crosshair();
@@ -216,5 +206,4 @@ function gameStart(): void {
     collision = new managers.Collision();
     
     stage.addChild(game);
-
 }

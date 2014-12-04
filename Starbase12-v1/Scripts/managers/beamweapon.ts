@@ -78,7 +78,7 @@ module managers {
         // Set phaser state to Strafing
         private _phaserStrafing() {
             // check to see if phaser sound is still playing
-            if ((hud.phaserEnergy > 0) && (this.phaserSound.playState != createjs.Sound.PLAY_FINISHED)) {
+            if ((collision.playerAlive) && (hud.phaserEnergy > 0) && (this.phaserSound.playState != createjs.Sound.PLAY_FINISHED)) {
                 this._strafe = true;
             }
         }
@@ -86,7 +86,7 @@ module managers {
         // Fire Phaser and Play Sound
         private _phaserStart() {
 
-            if (hud.phaserEnergy > 0) {
+            if ((collision.playerAlive) && (hud.phaserEnergy > 0)) {
                 this.phaserSound = createjs.Sound.play("phaser");
                 this.phaserSound.on("complete", this.destroy, this);
                 hud.phaserEnergy = Math.floor(hud.phaserEnergy * 0.9);
@@ -150,7 +150,7 @@ module managers {
 
         // Check if photo has been fired
         private _checkPhotonFire() {
-            if ((player.photonFired) && (this._photonNum % 60 == 0)) {
+            if ((collision.playerAlive) && (player.photonFired) && (this._photonNum % 60 == 0)) {
                 this.photonSound = createjs.Sound.play("photon");
                 var photon = new objects.Photon();
                 this.photons.push(photon);

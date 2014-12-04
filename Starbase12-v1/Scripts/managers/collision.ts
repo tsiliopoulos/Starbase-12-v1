@@ -29,7 +29,6 @@ module managers {
         private _shieldCollider(attackObject: objects.GameObject, defendObject: objects.GameObject) {
             var attackerPosition = attackObject.location;
             var shield = defendObject.shield;
-
             // Check if current Shield Arc is up
             if (utility.distance(attackerPosition, shield.location) < (shield.radius + attackObject.radius)) {
                 var incomingAngle: number = 0;

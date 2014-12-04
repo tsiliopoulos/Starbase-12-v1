@@ -24,42 +24,46 @@
 /// <reference path="objects/phasertracer.ts" />
 /// <reference path="objects/phaser.ts" />
 /// <reference path="objects/photon.ts" />
+/// <reference path="managers/klingon.ts" />
 /// <reference path="managers/particleexplosion.ts" />
 /// <reference path="managers/beamweapon.ts" />
 /// <reference path="managers/collision.ts" />
 var stage;
 var canvas;
-
-var gameTiles = [];
-
 var stats;
 
-//var count: number = 0;
 // Filters
 var colorFilter = new createjs.ColorFilter(1, 1, 0);
 
 // Game Objects
-var emitters = [];
-var explosions = [];
 var player;
 var starbase;
-var enemies = [];
 var background;
 var hud;
+var crosshair;
+
+// Game Arrays
+var emitters = [];
+var explosions = [];
+var gameTiles = [];
+var enemies = [];
 
 // Game Managers
 var beamWeapon;
 var collision;
 var particleExplosion;
+var klingon;
 
-var crosshair;
+// Game Container
 var game;
 
+// Preload Assets
 function preload() {
     managers.Assets.init();
     managers.Assets.loader.addEventListener("complete", init);
 }
 
+// Initialize Game
 function init() {
     canvas = config.ARCADE_CANVAS;
 
@@ -72,37 +76,37 @@ function init() {
     gameStart();
 }
 
+// Main Game Loop
 function gameLoop(event) {
     // Start counting for FPS stats
     this.stats.begin();
 
+    // Update Starbase
     starbase.update();
     starbase.integrityLabel.updateCache();
     starbase.updateCache();
 
+    // Update Player
     player.update();
     player.integrityLabel.updateCache();
     player.updateCache();
 
-    for (var count = 0; count < enemies.length; count++) {
-        enemies[count].update();
-        enemies[count].integrityLabel.updateCache();
-        enemies[count].updateCache();
-    }
-
+    // Update Managers
+    klingon.update();
     beamWeapon.update();
-
     particleExplosion.update();
-
     collision.update();
 
+    // Update Crosshair
     crosshair.update();
     crosshair.updateCache();
 
+    // Update HUD
     hud.update();
 
     stage.update(event);
 
+    // Stop counting Stats
     return this.stats.end();
 }
 
@@ -142,21 +146,7 @@ function getLocationFromTile(entity) {
     entity.shield.y = entity.y;
 }
 
-// Create new enemy ships
-function spawnEnemies() {
-    for (var count = 0; count < config.ENEMY_COUNT; count++) {
-        enemies[count] = new objects.Enemy();
-        game.addChild(enemies[count]);
-        game.addChild(enemies[count].integrityLabel);
-        enemies[count].integrityLabel.shadow = new createjs.Shadow('#FFF', 2, 2, 8);
-        enemies[count].integrityLabel.filters = [colorFilter];
-
-        enemies[count].integrityLabel.cache(0, 0, enemies[count].integrityLabel.getBounds().width, enemies[count].integrityLabel.getBounds().height);
-        enemies[count].cache(0, 0, enemies[count].width, enemies[count].height);
-        getLocationFromTile(enemies[count]);
-    }
-}
-
+// Main Game Function
 function gameStart() {
     setupStats();
     setupGameTiles();
@@ -194,8 +184,9 @@ function gameStart() {
     player.cache(0, 0, player.width, player.height);
     getLocationFromTile(player);
 
-    // Create enemies
-    this.spawnEnemies();
+    // Instantiate Enemy Manager and Create enemies
+    klingon = new managers.Klingon();
+    klingon.spawn();
 
     // Create the Crosshair
     crosshair = new objects.Crosshair();
