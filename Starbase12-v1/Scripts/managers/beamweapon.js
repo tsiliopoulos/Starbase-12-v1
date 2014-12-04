@@ -17,9 +17,6 @@ var managers;
             game.on("mousedown", this._phaserStart, this);
             game.on("pressup", this.destroy, this);
             game.on("pressmove", this._phaserStrafing, this);
-
-            this.starbaseAlive = true;
-            this.playerAlive = true;
         }
         // PUBLIC METHODS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // Stop Phaser
@@ -112,7 +109,7 @@ var managers;
         // Check if enemy is firing disruptor
         BeamWeapon.prototype._checkDisruptorFire = function () {
             // Ensure starbase or player is alive in order to fire disruptor
-            if ((this.starbaseAlive) || (this.playerAlive)) {
+            if ((collision.starbaseAlive) || (collision.playerAlive)) {
                 for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
                     var enemy = enemies[enemyNum];
                     if ((enemy.disruptorFire) && (this._disruptorNum % enemy.rateOfFire == 0)) {

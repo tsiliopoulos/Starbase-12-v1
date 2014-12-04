@@ -5,6 +5,11 @@
 module managers {
     export class Collision {
 
+        // PUBLIC PROPERTIES +++++++++++++++++++++++++++++++++++++++++++++
+        public starbaseAlive: boolean;
+        public playerAlive: boolean;
+        public klingonsAlive: boolean;
+
         // PRIVATE PROPERTIES ++++++++++++++++++++++++++++++++++++++++++++
         private _currentTracer: objects.PhaserTracer;
         private _currentDisruptor: objects.Disruptor;
@@ -13,6 +18,9 @@ module managers {
 
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++ 
         constructor() {
+            this.starbaseAlive = true;
+            this.playerAlive = true;
+            this.klingonsAlive = true;
         }
 
         // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++
@@ -37,11 +45,19 @@ module managers {
 
                 // check if shield arc is up
                 if ((currentArc.integrity > 0) && (currentArc.alpha > 0)) {
-                    if (attackObject.name == "ship") {
-                        currentArc.integrity -= attackObject.damage * (hud.phaserEnergy * 0.01);
+                    if (attackObject.name == "tracer") {
+                        var damage = attackObject.damage * (hud.phaserEnergy * 0.01);
+                        currentArc.integrity -= damage;
+                        if (defendObject.name != "starbase") {
+                            hud.score += damage * 2;
+                        }
                     }
                     else {
-                        currentArc.integrity -= attackObject.damage;
+                        var damage = attackObject.damage;
+                        currentArc.integrity -= damage;
+                        if ((attackObject.name = "photon") && (defendObject.name != "starbase")) {
+                            hud.score += damage * 2;
+                        }
                     }
                     createjs.Sound.play("shield");
                     if (defendObject.name == "klingon") {
@@ -67,15 +83,23 @@ module managers {
         }
 
         // Method to determine if an attack object hits a defender's hull
-        private _hullCollider(attackObject: objects.GameObject, defendObject: objects.GameObject, defenderIndex:number) {
+        private _hullCollider(attackObject: objects.GameObject, defendObject: objects.GameObject, defenderIndex: number) {
             var attackerPosition = attackObject.location;
             if (utility.distance(attackerPosition, defendObject.location) < (attackObject.radius + (defendObject.radius * 0.7))) {
                 var hullString: string = defendObject.name;
                 if (attackObject.name == "tracer") {
-                    defendObject.integrity -= attackObject.damage * (hud.phaserEnergy * 0.01);
+                    var damage = attackObject.damage * (hud.phaserEnergy * 0.01);
+                    defendObject.integrity -= damage;
+                    if (defendObject.name != "starbase") {
+                        hud.score += damage * 3;
+                    }
                 }
                 else {
-                    defendObject.integrity -= attackObject.damage;
+                    var damage = attackObject.damage;
+                    defendObject.integrity -= damage;
+                    if ((attackObject.name = "photon") && (defendObject.name != "starbase")) {
+                        hud.score += damage * 3;
+                    }
                 }
                 if (defendObject.name != "klingon") {
                     if ((defendObject.integrity > 35) && (defendObject.integrity < 61)) {
@@ -95,22 +119,27 @@ module managers {
                     defendObject.shieldsDown();
                     if (defendObject.name == "klingon") {
                         enemies.splice(defenderIndex, 1);
+                        if (enemies.length == 0) {
+                            this.klingonsAlive = false;
+                        }
                     }
                     game.removeChild(defendObject.integrityLabel);
                     game.removeChild(defendObject);
                     // check if the target is destroyed
                     switch (defendObject.name) {
                         case "starbase":
-                            beamWeapon.starbaseAlive = false;
+                            this.starbaseAlive = false;
                             break;
                         case "ship":
-                            beamWeapon.playerAlive = false;
+                            this.playerAlive = false;
                             break;
                     }
                 }
                 attackObject.speed = 0;
             }
         }
+
+        // PHASER COLLISIONS
 
         // Check for collisions between phasers and enemy shields
         private _checkPhaserAndEnemyShields() {
@@ -129,6 +158,18 @@ module managers {
             }
         }
 
+        // Check for collisions between phasers and starbase shields
+        private _checkPhaserAndStarbaseShields() {
+            this._shieldCollider(this._currentTracer, starbase);
+        }
+
+        // Check for collisions between phaser and starbase hull
+        private _checkPhaserAndStarbase() {
+            this._hullCollider(this._currentTracer, starbase, 0);
+        }
+
+        // PHOTON COLLISIONS
+
         // Check for collisions between photons and enemy shields
         private _checkPhotonAndEnemyShields() {
             for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
@@ -145,6 +186,18 @@ module managers {
                 this._hullCollider(this._currentPhoton, enemy, enemyNum);
             }
         }
+
+        // Check for collisions between photons and starbase shields
+        private _checkPhotonAndStarbaseShields() {
+            this._shieldCollider(this._currentPhoton, starbase);
+        }
+
+        // Check for collisions between photons and starbase hull
+        private _checkPhotonAndStarbase() {
+            this._hullCollider(this._currentPhoton, starbase, 0);
+        }
+
+        // DISRUPTOR COLLISIONS
 
         // Collision between Disruptor and Starbase Shields
         private _checkDisruptorAndStarbaseShields() {
@@ -173,35 +226,43 @@ module managers {
             // Check Phaser Collisions
             if ((beamWeapon.phasers.length > 0) && (beamWeapon.tracers.length > 0)) {
                 this._currentTracer = beamWeapon.tracers[beamWeapon.phasers.length - 1];
-                if (enemies.length > 0) {
+                if (this.klingonsAlive) {
                     this._checkPhaserAndEnemyShields();
                     this._checkPhaserAndEnemy();
                 }
+                if (this.starbaseAlive) {
+                    this._checkPhaserAndStarbaseShields();
+                    this._checkPhaserAndStarbase();
+                }
             }
-            
+
 
             // Check Photon Collisions
             if (beamWeapon.photons.length > 0) {
                 this._currentPhoton = beamWeapon.photons[beamWeapon.photons.length - 1];
-                if (enemies.length > 0) {
+                if (this.klingonsAlive) {
                     this._checkPhotonAndEnemyShields();
                     this._checkPhotonAndEnemy();
                 }
+                if (this.starbaseAlive) {
+                    this._checkPhotonAndStarbaseShields();
+                    this._checkPhotonAndStarbase();
+                }
             }
-            
+
             // Check Disruptor Collisions
             if (beamWeapon.disruptors.length > 0) {
                 this._currentDisruptor = beamWeapon.disruptors[beamWeapon.disruptors.length - 1];
-                if (starbase.integrity > 0) {
+                if (this.starbaseAlive) {
                     this._checkDisruptorAndStarbaseShields();
                     this._checkDisruptorAndStarbase();
                 }
-                if (player.integrity > 0) {
+                if (this.playerAlive) {
                     this._checkDisruptorAndPlayerShields();
                     this._checkDisruptorAndPlayer();
                 }
             }
-            
+
         }
 
     }

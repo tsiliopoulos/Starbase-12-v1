@@ -27,14 +27,15 @@ var objects;
             } else {
                 this._photonValue.color = config.GREEN;
             }
+            this._scoreValue.text = Math.floor(this.score).toString();
         };
 
         // PRIVATE METHODS
         // Initialize values
         Hud.prototype._init = function () {
             this.phaserEnergy = config.PHASER_LEVEL;
-            this.hullIntegrity = config.INTEGRITY;
             this.photonNumber = config.PHOTON_NUM;
+            this.score = 0;
         };
 
         // Draw labels onto the HUD
@@ -54,6 +55,14 @@ var objects;
             this._photonValue = new createjs.Text(this.photonNumber.toString(), config.FONT_SIZE + " " + config.FONT, config.GREEN);
             this._photonValue.x = 260;
             this.addChild(this._photonValue);
+
+            this._scoreLabel = new createjs.Text("SCORE", config.FONT_SIZE + " " + config.FONT, config.FONT_COLOUR);
+            this._scoreLabel.x = 600;
+            this.addChild(this._scoreLabel);
+
+            this._scoreValue = new createjs.Text(this.score.toString(), config.FONT_SIZE + " " + config.FONT, config.GREEN);
+            this._scoreValue.x = 660;
+            this.addChild(this._scoreValue);
         };
 
         // Draw HUD Borders (Yellow)

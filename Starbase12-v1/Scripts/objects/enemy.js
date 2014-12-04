@@ -83,10 +83,10 @@ var objects;
 
         // Check to see if target is still alive
         Enemy.prototype._checkTargetAlive = function () {
-            if (!beamWeapon.starbaseAlive) {
+            if (!collision.starbaseAlive) {
                 this.target = player;
             }
-            if (!beamWeapon.playerAlive) {
+            if (!collision.playerAlive) {
                 this.target = starbase;
             }
         };

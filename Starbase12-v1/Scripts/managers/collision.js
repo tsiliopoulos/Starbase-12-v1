@@ -6,6 +6,9 @@ var managers;
     var Collision = (function () {
         // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++++++
         function Collision() {
+            this.starbaseAlive = true;
+            this.playerAlive = true;
+            this.klingonsAlive = true;
         }
         // PRIVATE METHODS +++++++++++++++++++++++++++++++++++++++++++++++
         // Method to determine if an attack object hits a defender's shields
@@ -28,10 +31,18 @@ var managers;
 
                 // check if shield arc is up
                 if ((currentArc.integrity > 0) && (currentArc.alpha > 0)) {
-                    if (attackObject.name == "ship") {
-                        currentArc.integrity -= attackObject.damage * (hud.phaserEnergy * 0.01);
+                    if (attackObject.name == "tracer") {
+                        var damage = attackObject.damage * (hud.phaserEnergy * 0.01);
+                        currentArc.integrity -= damage;
+                        if (defendObject.name != "starbase") {
+                            hud.score += damage * 2;
+                        }
                     } else {
-                        currentArc.integrity -= attackObject.damage;
+                        var damage = attackObject.damage;
+                        currentArc.integrity -= damage;
+                        if ((attackObject.name = "photon") && (defendObject.name != "starbase")) {
+                            hud.score += damage * 2;
+                        }
                     }
                     createjs.Sound.play("shield");
                     if (defendObject.name == "klingon") {
@@ -60,9 +71,17 @@ var managers;
             if (utility.distance(attackerPosition, defendObject.location) < (attackObject.radius + (defendObject.radius * 0.7))) {
                 var hullString = defendObject.name;
                 if (attackObject.name == "tracer") {
-                    defendObject.integrity -= attackObject.damage * (hud.phaserEnergy * 0.01);
+                    var damage = attackObject.damage * (hud.phaserEnergy * 0.01);
+                    defendObject.integrity -= damage;
+                    if (defendObject.name != "starbase") {
+                        hud.score += damage * 3;
+                    }
                 } else {
-                    defendObject.integrity -= attackObject.damage;
+                    var damage = attackObject.damage;
+                    defendObject.integrity -= damage;
+                    if ((attackObject.name = "photon") && (defendObject.name != "starbase")) {
+                        hud.score += damage * 3;
+                    }
                 }
                 if (defendObject.name != "klingon") {
                     if ((defendObject.integrity > 35) && (defendObject.integrity < 61)) {
@@ -82,16 +101,19 @@ var managers;
                     defendObject.shieldsDown();
                     if (defendObject.name == "klingon") {
                         enemies.splice(defenderIndex, 1);
+                        if (enemies.length == 0) {
+                            this.klingonsAlive = false;
+                        }
                     }
                     game.removeChild(defendObject.integrityLabel);
                     game.removeChild(defendObject);
 
                     switch (defendObject.name) {
                         case "starbase":
-                            beamWeapon.starbaseAlive = false;
+                            this.starbaseAlive = false;
                             break;
                         case "ship":
-                            beamWeapon.playerAlive = false;
+                            this.playerAlive = false;
                             break;
                     }
                 }
@@ -99,6 +121,7 @@ var managers;
             }
         };
 
+        // PHASER COLLISIONS
         // Check for collisions between phasers and enemy shields
         Collision.prototype._checkPhaserAndEnemyShields = function () {
             for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
@@ -116,6 +139,17 @@ var managers;
             }
         };
 
+        // Check for collisions between phasers and starbase shields
+        Collision.prototype._checkPhaserAndStarbaseShields = function () {
+            this._shieldCollider(this._currentTracer, starbase);
+        };
+
+        // Check for collisions between phaser and starbase hull
+        Collision.prototype._checkPhaserAndStarbase = function () {
+            this._hullCollider(this._currentTracer, starbase, 0);
+        };
+
+        // PHOTON COLLISIONS
         // Check for collisions between photons and enemy shields
         Collision.prototype._checkPhotonAndEnemyShields = function () {
             for (var enemyNum = 0; enemyNum < enemies.length; enemyNum++) {
@@ -133,6 +167,17 @@ var managers;
             }
         };
 
+        // Check for collisions between photons and starbase shields
+        Collision.prototype._checkPhotonAndStarbaseShields = function () {
+            this._shieldCollider(this._currentPhoton, starbase);
+        };
+
+        // Check for collisions between photons and starbase hull
+        Collision.prototype._checkPhotonAndStarbase = function () {
+            this._hullCollider(this._currentPhoton, starbase, 0);
+        };
+
+        // DISRUPTOR COLLISIONS
         // Collision between Disruptor and Starbase Shields
         Collision.prototype._checkDisruptorAndStarbaseShields = function () {
             this._shieldCollider(this._currentDisruptor, starbase);
@@ -159,29 +204,37 @@ var managers;
             // Check Phaser Collisions
             if ((beamWeapon.phasers.length > 0) && (beamWeapon.tracers.length > 0)) {
                 this._currentTracer = beamWeapon.tracers[beamWeapon.phasers.length - 1];
-                if (enemies.length > 0) {
+                if (this.klingonsAlive) {
                     this._checkPhaserAndEnemyShields();
                     this._checkPhaserAndEnemy();
+                }
+                if (this.starbaseAlive) {
+                    this._checkPhaserAndStarbaseShields();
+                    this._checkPhaserAndStarbase();
                 }
             }
 
             // Check Photon Collisions
             if (beamWeapon.photons.length > 0) {
                 this._currentPhoton = beamWeapon.photons[beamWeapon.photons.length - 1];
-                if (enemies.length > 0) {
+                if (this.klingonsAlive) {
                     this._checkPhotonAndEnemyShields();
                     this._checkPhotonAndEnemy();
+                }
+                if (this.starbaseAlive) {
+                    this._checkPhotonAndStarbaseShields();
+                    this._checkPhotonAndStarbase();
                 }
             }
 
             // Check Disruptor Collisions
             if (beamWeapon.disruptors.length > 0) {
                 this._currentDisruptor = beamWeapon.disruptors[beamWeapon.disruptors.length - 1];
-                if (starbase.integrity > 0) {
+                if (this.starbaseAlive) {
                     this._checkDisruptorAndStarbaseShields();
                     this._checkDisruptorAndStarbase();
                 }
-                if (player.integrity > 0) {
+                if (this.playerAlive) {
                     this._checkDisruptorAndPlayerShields();
                     this._checkDisruptorAndPlayer();
                 }
