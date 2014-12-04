@@ -1,10 +1,11 @@
 ﻿// Enemy Manager Class
 module managers {
     export class Klingon {
+        // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++
         constructor() {
         }
 
-        // PULBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++
+        // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++
 
         // Update Method
         update() {
@@ -27,7 +28,7 @@ module managers {
 
                 enemies[count].integrityLabel.cache(0, 0, enemies[count].integrityLabel.getBounds().width, enemies[count].integrityLabel.getBounds().height);
                 enemies[count].cache(0, 0, enemies[count].width, enemies[count].height);
-                getLocationFromTile(enemies[count]);
+                gameTile.getLocation(enemies[count]);
             }
         }
     }

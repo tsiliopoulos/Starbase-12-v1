@@ -2,9 +2,10 @@
 var managers;
 (function (managers) {
     var Klingon = (function () {
+        // CONSTRUCTOR +++++++++++++++++++++++++++++++++++++++++++++++
         function Klingon() {
         }
-        // PULBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++
+        // PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++++++
         // Update Method
         Klingon.prototype.update = function () {
             for (var count = 0; count < enemies.length; count++) {
@@ -25,7 +26,7 @@ var managers;
 
                 enemies[count].integrityLabel.cache(0, 0, enemies[count].integrityLabel.getBounds().width, enemies[count].integrityLabel.getBounds().height);
                 enemies[count].cache(0, 0, enemies[count].width, enemies[count].height);
-                getLocationFromTile(enemies[count]);
+                gameTile.getLocation(enemies[count]);
             }
         };
         return Klingon;

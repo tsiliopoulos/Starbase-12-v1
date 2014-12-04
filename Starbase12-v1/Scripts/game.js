@@ -3,6 +3,7 @@
 /// <reference path="config/layer.ts" />
 /// <reference path="config/controls.ts" />
 /// <reference path="managers/asset.ts" />
+/// <reference path="managers/gametile.ts" />
 /// <reference path="utility/showlocation.ts" />
 /// <reference path="utility/drawdebugrect.ts" />
 /// <reference path="utility/distance.ts" />
@@ -49,6 +50,7 @@ var gameTiles = [];
 var enemies = [];
 
 // Game Managers
+var gameTile;
 var beamWeapon;
 var collision;
 var particleExplosion;
@@ -120,36 +122,12 @@ function setupStats() {
     document.body.appendChild(stats.domElement);
 }
 
-// Setup Game Tile Array
-function setupGameTiles() {
-    var count = 0;
-    for (var row = 0; row < config.TILE_ROW; row++) {
-        for (var col = 0; col < config.TILE_COL; col++) {
-            gameTiles[count] = new createjs.Point();
-            gameTiles[count].x = 35 + (col * config.TILE_WIDTH);
-            gameTiles[count].y = 34 + (row * config.TILE_HEIGHT);
-            count++;
-        }
-    }
-}
-
-// Get Location for game entity from Game Tile Array
-function getLocationFromTile(entity) {
-    var TileLocation = Math.floor(Math.random() * gameTiles.length);
-
-    entity.location.x = gameTiles[TileLocation].x + config.TILE_WIDTH * 0.5;
-    entity.location.y = gameTiles[TileLocation].y + config.TILE_HEIGHT * 0.5;
-    gameTiles.splice(TileLocation, 1);
-    entity.x = entity.location.x;
-    entity.y = entity.location.y;
-    entity.shield.x = entity.x;
-    entity.shield.y = entity.y;
-}
-
 // Main Game Function
 function gameStart() {
     setupStats();
-    setupGameTiles();
+
+    gameTile = new managers.GameTile();
+    gameTile.init();
 
     // the Main object container
     game = new createjs.Container();
@@ -171,7 +149,7 @@ function gameStart() {
 
     starbase.integrityLabel.cache(0, 0, starbase.integrityLabel.getBounds().width, starbase.integrityLabel.getBounds().height);
     starbase.cache(0, 0, starbase.width, starbase.height);
-    getLocationFromTile(starbase);
+    gameTile.getLocation(starbase);
 
     // Create player
     player = new objects.Player();
@@ -182,7 +160,7 @@ function gameStart() {
 
     player.integrityLabel.cache(0, 0, player.integrityLabel.getBounds().width, player.integrityLabel.getBounds().height);
     player.cache(0, 0, player.width, player.height);
-    getLocationFromTile(player);
+    gameTile.getLocation(player);
 
     // Instantiate Enemy Manager and Create enemies
     klingon = new managers.Klingon();
